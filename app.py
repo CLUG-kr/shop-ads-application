@@ -61,7 +61,7 @@ def signIn():
     if (Access == False):
         data = "<h1>fail<h1>"
     else :
-        data = "<h1>success<h1>" + "<h1>" + hashlib.md5((username+time).encode())
+        data = "<h1>success<h1>" + "<h1>" + str(hashlib.md5((username+time).encode())) + "<h1>"
     conn.commit()
     conn.close()
     return data
