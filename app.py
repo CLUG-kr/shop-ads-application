@@ -1,11 +1,10 @@
 from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template
 import sqlite3
-import json
 import socket
 import os
 import hashlib
-UPLOAD_FOLDER = "./"
-
+UPLOAD_FOLDER = "./database"
+userManageDB = 'userManage.db'
 app = Flask(__name__)
 
 
@@ -18,7 +17,7 @@ def signUp_render():
     return render_template('sign_up.html')
 @app.route("/signUp", methods=['POST'])
 def signUp():
-    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,'userManage.db'))
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,userManageDB))
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
@@ -46,7 +45,7 @@ def signIp_render():
     return render_template('sign_in.html')
 @app.route("/signIn", methods=['POST','GET'])
 def signIn():
-    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,'userManage.db'))
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,userManageDB))
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
@@ -68,6 +67,17 @@ def signIn():
     conn.commit()
     conn.close()
     return data
+
+def DBinit():
+    if not os.path.isfile(os.path.join(UPLOAD_FOLDER, userManageDB)):
+        conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, userManageDB))
+        curs = conn.cursor()
+        curs.execute("CREATE TABLE  if not exists userManage(username, password)")
+        conn.commit()
+        conn.close()
+
+
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
+    DBinit()
     app.run(host = IP, port = 5010,debug=True)
