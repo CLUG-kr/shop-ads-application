@@ -22,7 +22,7 @@ def signUp():
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
-    dbPassword = hashlib.md5(password).hexdigest()
+    dbPassword = hashlib.md5(password.encode()).hexdigest()
     curs.execute("SELECT * FROM userManage")
 
     Access = True
@@ -48,7 +48,7 @@ def signIn():
     username = request.form['id']
     password = request.form['pw']
     time = request.form['time']
-    dbPassword = hashlib.md5(password).hexdigest()
+    dbPassword = hashlib.md5(password.encode()).hexdigest()
     curs.execute("SELECT * FROM userManage")
 
     Access = False
@@ -61,7 +61,7 @@ def signIn():
     if (Access == False):
         data = "<h1>fail<h1>"
     else :
-        data = "<h1>success<h1>" + "<h1>" + hashlib.md5(username+time)
+        data = "<h1>success<h1>" + "<h1>" + hashlib.md5((username+time).encode())
     conn.commit()
     conn.close()
     return data
