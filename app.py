@@ -3,6 +3,7 @@ import sqlite3
 import json
 import socket
 import os
+import hashlib
 UPLOAD_FOLDER = "./"
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ def signUp():
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
+    dbPassword = hashlib.md5(password).hexdigest()
     curs.execute("SELECT * FROM userManage")
 
     Access = True
@@ -33,7 +35,7 @@ def signUp():
         conn.commit()
         conn.close()
         return data
-    curs.execute("insert into userManage values ('" + username + "', '" + password  + "')")
+    curs.execute("insert into userManage values ('" + username + "', '" + dbPassword  + "')")
     conn.commit()
     conn.close()
     data = "<h1>success<h1>"
@@ -45,20 +47,21 @@ def signIn():
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
-
+    time = request.form['time']
+    dbPassword = hashlib.md5(password).hexdigest()
     curs.execute("SELECT * FROM userManage")
 
     Access = False
     for i in curs.fetchall():
         if i[0] == username:
-            if i[1] == password:
+            if i[1] == dbPassword:
                 Access = True
                 break
 
     if (Access == False):
         data = "<h1>fail<h1>"
     else :
-        data = "<h1>success<h1>"
+        data = "<h1>success<h1>" + "<h1>" + hashlib.md5(username+time)
     conn.commit()
     conn.close()
     return data
