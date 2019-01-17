@@ -39,10 +39,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
+                android:id="@+id/map_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/map_image"/>
+                android:src="@drawable/map_image" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/item_button"
@@ -50,10 +52,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
+                android:id="@+id/item_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/item_image"/>
+                android:src="@drawable/item_image" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/home_button"
@@ -61,29 +65,35 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
+                android:id="@+id/home_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/home_image"/></LinearLayout>
+                android:src="@drawable/home_image" /></LinearLayout>
         <LinearLayout
             android:id="@+id/event_button"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
+                android:id="@+id/event_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/event_image"/></LinearLayout>
+                android:src="@drawable/event_image" /></LinearLayout>
         <LinearLayout
             android:id="@+id/community_button"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
+                android:id="@+id/communication_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/community_image"/></LinearLayout>
+                android:src="@drawable/community_image" /></LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
