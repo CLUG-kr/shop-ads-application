@@ -1,0 +1,7 @@
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/bounce_interpolator"
+    android:duration="500"
+    android:propertyName="translationX"
+    android:valueFrom="0"
+    android:valueTo="550"
+    android:repeatCount="3"/>
