@@ -40,44 +40,64 @@ public class BaseActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.navigation_map:
                         if (contextIndex != INDEX_MAP_ACTIVITY) {
+                            int enter_anim = (contextIndex > INDEX_MAP_ACTIVITY) ?
+                                    R.anim.anim_slide_in_right : R.anim.anim_slide_in_left ;
+                            int exit_anim = (contextIndex < INDEX_MAP_ACTIVITY)
+                                    ? R.anim.anim_slide_out_left : R.anim.anim_slide_out_right;
                             intent = new Intent(context, MapActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
-                            overridePendingTransition(0, 0);
+                            overridePendingTransition(enter_anim, exit_anim);
                         }
                         return true;
                     case R.id.navigation_sort:
                         if (contextIndex != INDEX_SORT_ACTIVITY) {
+                            int enter_anim = (contextIndex > INDEX_SORT_ACTIVITY) ?
+                                    R.anim.anim_slide_in_right : R.anim.anim_slide_in_left ;
+                            int exit_anim = (contextIndex < INDEX_SORT_ACTIVITY)
+                                    ? R.anim.anim_slide_out_left : R.anim.anim_slide_out_right;
                             intent = new Intent(context, SortActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
-                            overridePendingTransition(0, 0);
+                            overridePendingTransition(enter_anim, exit_anim);
                         }
                         return true;
                     case R.id.navigation_home:
                         if (contextIndex != INDEX_HOME_ACTIVITY) {
+                            int enter_anim = (contextIndex > INDEX_HOME_ACTIVITY) ?
+                                    R.anim.anim_slide_in_right : R.anim.anim_slide_in_left ;
+                            int exit_anim = (contextIndex < INDEX_HOME_ACTIVITY)
+                                    ? R.anim.anim_slide_out_left : R.anim.anim_slide_out_right;
                             intent = new Intent(context, HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
-                            overridePendingTransition(0, 0);
+                            overridePendingTransition(enter_anim, exit_anim);
                         }
                         return true;
 
                     case R.id.navigation_event:
                         if (contextIndex != INDEX_EVENT_ACTIVITY) {
+                            int enter_anim = (contextIndex > INDEX_EVENT_ACTIVITY) ?
+                                    R.anim.anim_slide_in_right : R.anim.anim_slide_in_left ;
+                            int exit_anim = (contextIndex < INDEX_EVENT_ACTIVITY)
+                                    ? R.anim.anim_slide_out_left : R.anim.anim_slide_out_right;
                             intent = new Intent(context, EventActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
-                            overridePendingTransition(0, 0);
+                            overridePendingTransition(enter_anim, exit_anim);
                         }
                         return true;
 
                     case R.id.navigation_community:
                         if (contextIndex != INDEX_COMMUNITY_ACTIVITY) {
+                            int enter_anim = (contextIndex > INDEX_COMMUNITY_ACTIVITY) ?
+                                    R.anim.anim_slide_in_right : R.anim.anim_slide_in_left ;
+                            int exit_anim = (contextIndex < INDEX_COMMUNITY_ACTIVITY)
+                                    ? R.anim.anim_slide_out_left : R.anim.anim_slide_out_right;
                             intent = new Intent(context, CommunityActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
-                            overridePendingTransition(0, 0);
+                            overridePendingTransition(enter_anim, exit_anim);
                         }
                         return true;
 
