@@ -20,8 +20,9 @@ public class HomeActivity extends BaseActivity {
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         configBottomNavigation(HomeActivity.this,navigation);
 
-        GetHTMLTask task = new GetHTMLTask("signUp");
-        task.execute();
+        GetHTMLTask task = new GetHTMLTask("signIn", "testID", "testPW");
+        task.execute("signIn", "testID2", "testPW");
+        //task.execute("signIn", "testID2", "testPW");
 
         Log.d("test","start");
     }
