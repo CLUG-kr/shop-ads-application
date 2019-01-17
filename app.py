@@ -29,15 +29,15 @@ def signUp():
             Access = False
             break
     if (Access == False):
-        data = "<return fail> </result>"
+        data = '<h1>fail<h1>'
         conn.commit()
         conn.close()
-        return json.dumps(data, ensure_ascii=False)
+        return data
     curs.execute("insert into userManage values ('" + username + "', '" + password  + "')")
     conn.commit()
     conn.close()
-    data = "<return success> </result>"
-    return json.dumps(data, ensure_ascii=False)
+    data = "<h1>success<h1>"
+    return data
 
 @app.route("/signIn", methods=['POST','GET'])
 def signIn():
@@ -56,12 +56,12 @@ def signIn():
                 break
 
     if (Access == False):
-        data = "<return fail> </result>"
+        data = "<h1>fail<h1>"
     else :
-        data = "<return success> </result>"
+        data = "<h1>success<h1>"
     conn.commit()
     conn.close()
-    return json.dumps(data, ensure_ascii=False)
-
+    return data
 if __name__ == '__main__':
-    app.run()
+    IP = str(socket.gethostbyname(socket.gethostname()))
+    app.run(host = IP, port = 5010,debug=True)
