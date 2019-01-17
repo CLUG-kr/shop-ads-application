@@ -41,6 +41,9 @@ def signUp():
     data = "<h1>success<h1>"
     return data
 
+@app.route("/signIn", methods=['GET'])
+def signIp_render():
+    return render_template('sign_in.html')
 @app.route("/signIn", methods=['POST','GET'])
 def signIn():
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,'userManage.db'))
@@ -61,7 +64,7 @@ def signIn():
     if (Access == False):
         data = "<h1>fail<h1>"
     else :
-        data = "<h1>success<h1>" + "<h1>" + str(hashlib.md5((username+time).encode())) + "<h1>"
+        data = "<h1>success<h1>" + "<h1>" + str(hashlib.md5((username+time).encode()).hexdigest()) + "<h1>"
     conn.commit()
     conn.close()
     return data
