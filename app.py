@@ -68,7 +68,7 @@ def signIn():
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
         data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
-        resp = make_response(render_template(data))
+        resp = make_response(data)
         resp.set_cookie(username, userKey)
     conn.commit()
     conn.close()
@@ -94,9 +94,10 @@ def testData():
     print("user"+str(userKey) + '\n')
     if str(cookieKey).lower() == str(userKey).lower():
         Access = True
-    if (Access == False):
+    if Access == False:
         data = "<h1>wrong access<h1>"
-    else :
+    elif Access == True:
+        data = "<h1>testData</h1>"
         curs.execute("insert into testData values ('" + username + "', '" +"data1"+ "', '" +"data2"+"')")
         for i in curs.fetchall():
             if i[0] == username:
