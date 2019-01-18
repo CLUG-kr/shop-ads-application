@@ -84,9 +84,9 @@ def testData():
     curs.execute("SELECT * FROM testData")
 
     Access = False
-    print("session"+session.get(username))
-    print("user"+userKey)
-    if session.get(username).lower() == userKey.lower():
+    print("session"+str(session.get(username)))
+    print("user"+str(userKey))
+    if str(session.get(username)).lower() == str(userKey).lower():
         Access = True
     if (Access == False):
         data = "<h1>wrong access<h1>"
