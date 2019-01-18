@@ -106,7 +106,7 @@ def DBinit():
         curs.execute("CREATE TABLE  if not exists userManage(username, password)")
         conn.commit()
         conn.close()
-    if not os.path.isfile(os.path.join(UPLOAD_FOLDER, userManageDB)):
+    if not os.path.isfile(os.path.join(UPLOAD_FOLDER, testDataDB)):
        conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, testDataDB))
        curs = conn.cursor()
        curs.execute("CREATE TABLE  if not exists testData(dataID,data1, data2)")
