@@ -3,12 +3,18 @@ import sqlite3
 import socket
 import os
 import hashlib
+from datetime import timedelta
 UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
 testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
 @app.route('/')
 def hello_world():
     return render_template('index.html')
