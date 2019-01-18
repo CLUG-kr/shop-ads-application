@@ -109,13 +109,16 @@ def testData():
 
 @app.route("/logout", methods=['GET'])
 def logout_render():
-    return render_template('test_data.html')
+    return render_template('logout.html')
 @app.route("/logout", methods=['POST','GET'])
 def logout():
     username = request.form['id']
-    resp = make_response()
-    resp.set_cookie(username, "null")
-    return "<h1>logout</h1>"
+    if username in request.cookies:
+        resp = make_response()
+        resp.set_cookie(username, "null")
+        return "<h1>logout</h1>"
+    else :
+        return "<h1>error_not_login</h1>"
 
 def DBinit():
     if not os.path.isdir(UPLOAD_FOLDER):
