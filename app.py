@@ -68,7 +68,7 @@ def signIn():
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
         data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
-        resp = make_response(render_template(data))
+        resp = make_response(data)
         resp.set_cookie(username, userKey)
     conn.commit()
     conn.close()
