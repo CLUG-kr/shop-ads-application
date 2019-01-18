@@ -3,6 +3,7 @@ package com.example.user.pyenhalean;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -18,16 +19,6 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
     String time = "temp";
     private Elements element;
 
-    public GetHTMLTask(String routeUrl, String loginCode) {
-        this.routeUrl = routeUrl;
-        this.loginCode = loginCode;
-    }
-
-    public GetHTMLTask(String routeUrl, String id, String pw) {
-        this.routeUrl = routeUrl;
-        this.id = id;
-        this.pw = pw;
-    }
 
     @Override
     protected void onPostExecute(String html) {
@@ -39,16 +30,22 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... parm) {
         String returnString = "";
-        Document doc = null;
+        Connection.Response res;
+        Document doc;
+
         try {
             if(parm[0].equals("signIn")){
-                doc = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).data("time", time).post();
-                element = doc.select("h1");
-                returnString = element.get(0).text() + "//" + element.get(2).text();
+                res = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).data("time", parm[3]).method(Connection.Method.POST).execute();
+                element = res.parse().select("h1");
+                returnString = element.get(0).text() + "#" + element.get(2).text() + "#" + res.cookie(parm[1]);
             } else if(parm[0].equals("signUp")){
-                doc = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).post();
-                element = doc.select("h1");
+                res = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).method(Connection.Method.POST).execute();
+                element = res.parse().select("h1");
                 returnString = element.get(0).text();
+            } else if(parm[0].equals("testData")){
+                doc = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("key",parm[2]).cookie(parm[1],parm[3]).post();
+                element = doc.select("h1");
+                returnString = element.text();
             }
 
         } catch (IOException e) {
