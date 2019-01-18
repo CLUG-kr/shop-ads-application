@@ -107,6 +107,16 @@ def testData():
     conn.close()
     return data
 
+@app.route("/logout", methods=['GET'])
+def logout_render():
+    return render_template('test_data.html')
+@app.route("/logout", methods=['POST','GET'])
+def logout():
+    username = request.form['id']
+    resp = make_response()
+    resp.set_cookie(username, "null")
+    return "<h1>logout</h1>"
+
 def DBinit():
     if not os.path.isdir(UPLOAD_FOLDER):
         os.mkdir(UPLOAD_FOLDER)
