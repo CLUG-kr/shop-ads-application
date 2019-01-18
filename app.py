@@ -99,6 +99,7 @@ def testData():
     elif Access == True:
         data = "<h1>testData</h1>"
         curs.execute("insert into testData values ('" + username + "', '" +"data1"+ "', '" +"data2"+"')")
+        curs.execute("SELECT  * FROM testData")
         for i in curs.fetchall():
             if i[0] == username:
                 data = data + "<h1>" + str(i[1]) + str(i[2]) + "</h1>"
