@@ -66,7 +66,7 @@ def signIn():
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
         data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
-        session[username] = userKey
+        session['username'] = userKey
     conn.commit()
     conn.close()
     return data
@@ -84,8 +84,8 @@ def testData():
     curs.execute("SELECT * FROM testData")
 
     Access = False
-    print("session"+str(session.get(username)))
-    print("user"+str(userKey))
+    print("session"+str(session.get('username')) + '\n')
+    print("user"+str(userKey) + '\n')
     if str(session.get(username)).lower() == str(userKey).lower():
         Access = True
     if (Access == False):
