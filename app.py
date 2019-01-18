@@ -53,7 +53,6 @@ def signIn():
     time = request.form['time']
     dbPassword = hashlib.md5(password.encode()).hexdigest()
     curs.execute("SELECT * FROM userManage")
-
     Access = False
     for i in curs.fetchall():
         if i[0] == username:
@@ -86,7 +85,7 @@ def testData():
     Access = False
     print("session"+str(session.get('username')) + '\n')
     print("user"+str(userKey) + '\n')
-    if str(session.get(username)).lower() == str(userKey).lower():
+    if str(session.get('username')).lower() == str(userKey).lower():
         Access = True
     if (Access == False):
         data = "<h1>wrong access<h1>"
