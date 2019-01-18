@@ -94,9 +94,10 @@ def testData():
     print("user"+str(userKey) + '\n')
     if str(cookieKey).lower() == str(userKey).lower():
         Access = True
-    if (Access == False):
+    if Access == False:
         data = "<h1>wrong access<h1>"
-    else :
+    elif Access == True:
+        data = "<h1>testData</h1>"
         curs.execute("insert into testData values ('" + username + "', '" +"data1"+ "', '" +"data2"+"')")
         for i in curs.fetchall():
             if i[0] == username:
