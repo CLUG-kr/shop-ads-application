@@ -1,4 +1,5 @@
-from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template, session
+from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template, session, \
+    make_response
 import sqlite3
 import socket
 import os
@@ -10,11 +11,6 @@ testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
-
-@app.before_request
-def make_session_permanent():
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=5)
 @app.route('/')
 def hello_world():
     return render_template('index.html')
@@ -68,13 +64,15 @@ def signIn():
 
     if (Access == False):
         data = "<h1>fail<h1>"
+        return data
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
         data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
-        session['username'] = userKey
+        resp = make_response(render_template(data))
+        resp.set_cookie(username, userKey)
     conn.commit()
     conn.close()
-    return data
+    return resp
 
 @app.route("/testData", methods=['GET'])
 def testData_render():
@@ -85,13 +83,16 @@ def testData():
     curs = conn.cursor()
     username = request.form['id']
     userKey = request.form['key']
+    if username in request.cookies:
+        cookieKey = request.cookies.get(username)
+    else :
+        return "<h1>wrong access<h1>"
 
     curs.execute("SELECT * FROM testData")
-
     Access = False
-    print("session"+str(session.get('username')) + '\n')
+    print('\n'+"session"+str(cookieKey) + '\n')
     print("user"+str(userKey) + '\n')
-    if str(session.get('username')).lower() == str(userKey).lower():
+    if str(cookieKey).lower() == str(userKey).lower():
         Access = True
     if (Access == False):
         data = "<h1>wrong access<h1>"
