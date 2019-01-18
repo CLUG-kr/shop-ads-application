@@ -1,10 +1,11 @@
-from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template
+from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template, session
 import sqlite3
 import socket
 import os
 import hashlib
 UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
+testDataDB = "testData.db"
 app = Flask(__name__)
 
 
@@ -63,18 +64,54 @@ def signIn():
     if (Access == False):
         data = "<h1>fail<h1>"
     else :
-        data = "<h1>success<h1>" + "<h1>" + str(hashlib.md5((username+time).encode()).hexdigest()) + "<h1>"
+        userKey = str(hashlib.md5((username+time).encode()).hexdigest())
+        data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
+        session[username] = userKey
+    conn.commit()
+    conn.close()
+    return data
+
+@app.route("/testData", methods=['GET'])
+def testData_render():
+    return render_template('test_data.html')
+@app.route("/testData", methods=['POST','GET'])
+def testData():
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,testDataDB))
+    curs = conn.cursor()
+    username = request.form['id']
+    userKey = request.form['key']
+
+    curs.execute("SELECT * FROM testData")
+
+    Access = False
+    if session.get(username) == userKey:
+        Access = True
+    if (Access == False):
+        data = "<h1>wrong access<h1>"
+    else :
+        curs.execute("insert into testData values ('" + username + "', '" +"data1"+ "', '" +"data2"+"')")
+        for i in curs.fetchall():
+            if i[0] == username:
+                data = data + "<h1>" + str(i[1]) + str(i[2]) + "</h1>"
     conn.commit()
     conn.close()
     return data
 
 def DBinit():
+    if not os.path.isdir(UPLOAD_FOLDER):
+        os.mkdir(UPLOAD_FOLDER)
     if not os.path.isfile(os.path.join(UPLOAD_FOLDER, userManageDB)):
         conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, userManageDB))
         curs = conn.cursor()
         curs.execute("CREATE TABLE  if not exists userManage(username, password)")
         conn.commit()
         conn.close()
+    if not os.path.isfile(os.path.join(UPLOAD_FOLDER, userManageDB)):
+       conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, testDataDB))
+       curs = conn.cursor()
+       curs.execute("CREATE TABLE  if not exists testData(dataID,data1, data2)")
+       conn.commit()
+       conn.close()
 
 
 if __name__ == '__main__':
