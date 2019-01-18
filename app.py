@@ -7,7 +7,7 @@ UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
 testDataDB = "testData.db"
 app = Flask(__name__)
-
+app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
 @app.route('/')
 def hello_world():
