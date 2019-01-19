@@ -24,11 +24,7 @@ userManageDB = 'userManage.db'
 testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
-options.add_argument("disable-gpu")
-driver = webdriver.Chrome('/home/ubuntu/Downloads/chromedriver', chrome_options=options)
+
 returnData = "return"
 
 def update_thread():
@@ -169,6 +165,11 @@ def testGS25():
 
 def update_data():
     sUrl = "http://gs25.gsretail.com/gscvs/ko/products/event-goods"
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+    driver = webdriver.Chrome('/home/ubuntu/Downloads/chromedriver', chrome_options=options)
     driver.implicitly_wait(3)
     driver.get(sUrl)
     prevEndCount = "prev"
