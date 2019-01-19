@@ -28,7 +28,7 @@ options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 options.add_argument("disable-gpu")
-driver = webdriver.Chrome('/Users/splo2t/Downloads/chromedriver', chrome_options=options)
+driver = webdriver.Chrome('/home/ubuntu/Downloads/chromedriver', chrome_options=options)
 returnData = "return"
 
 def update_thread():
