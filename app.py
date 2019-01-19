@@ -4,12 +4,39 @@ import sqlite3
 import socket
 import os
 import hashlib
+import time
+
+import selenium
+from selenium import webdriver
+from bs4 import BeautifulSoup
+import socket
+import datetime
+import threading
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+import threading
+
 from datetime import timedelta
 UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
 testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+options.add_argument('window-size=1920x1080')
+options.add_argument("disable-gpu")
+driver = webdriver.Chrome('/Users/splo2t/Downloads/chromedriver', chrome_options=options)
+returnData = "return"
+
+def update_thread():
+    while(1):
+        now = datetime.datetime.now()
+        if now.hour == 0 :
+            returnData = update_data()
+
 
 @app.route('/')
 def hello_world():
@@ -136,8 +163,62 @@ def DBinit():
        conn.commit()
        conn.close()
 
+@app.route("/test", methods=['GET'])
+def testGS25():
+    return returnData
+
+def update_data():
+    sUrl = "http://gs25.gsretail.com/gscvs/ko/products/event-goods"
+    driver.implicitly_wait(3)
+    driver.get(sUrl)
+    prevEndCount = "prev"
+    global returnData
+    while True:
+        time.sleep(3)
+        WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
+        #driver.find_element_by_xpath('//*[ @ id = "TOTAL"]').click()
+        el = driver.find_element_by_link_text("다음 페이지로 이동")
+        WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
+        time.sleep(1)
+        while True:
+            try:
+                WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.LINK_TEXT,"다음 페이지로 이동")))
+                driver.execute_script("scroll(0, 1500)");
+                time.sleep(1)
+                print("t")
+                driver.execute_script("arguments[0].click();", el)
+                print(123)
+                break;
+            except selenium.common.exceptions.StaleElementReferenceException:
+                time.sleep(1)
+
+        '''
+        for x in linkList:
+            if x.getAttribute("href").contains('#next;'):
+                x.click()
+                break
+        '''
+
+        getHTML = driver.page_source
+        soup = BeautifulSoup(getHTML, 'html.parser')
+        getData = soup.findAll('div', {'class' : 'prod_box'})
+
+        endCount = getData[3].find('p',{'class':'tit'}).getText()
+        if endCount == prevEndCount:
+            break;
+        else :
+            prevEndCount = endCount
+            print('pass')
+        for x in getData[3:11]:
+            print(x)
+            returnData += "<h1>" + x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+ x.find('div').getText()+"</h1>"
+    driver.quit()
+    return returnData
 
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
     DBinit()
+    returnData = update_data()
+    t = threading.Thread(target=update_thread)
+    t.start()
     app.run(host = IP, port = 5010,debug=True)
