@@ -32,7 +32,6 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
         String returnString = "";
         Connection.Response res;
         Document doc;
-
         try {
             if(parm[0].equals("signIn")){
                 res = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).data("time", parm[3]).method(Connection.Method.POST).execute();
@@ -54,7 +53,11 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
                 element = doc.select("h1");
                 returnString = element.text();
             }
-
+            else if(parm[0].equals("test")){
+                doc = Jsoup.connect(sUrl+parm[0]).get();
+                element = doc.select("h1");
+                returnString = element.text();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
