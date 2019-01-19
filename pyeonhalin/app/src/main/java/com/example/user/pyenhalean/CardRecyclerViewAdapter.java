@@ -14,17 +14,10 @@ import java.util.ArrayList;
 
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<CardViewItemDTO> cardViewItemDTOs = new ArrayList<>();
-    public CardRecyclerViewAdapter() {
-        cardViewItemDTOs.add(new CardViewItemDTO(R.drawable.preparing_image, "첫번째"
-                , "설명", "1500원"));
-        cardViewItemDTOs.add(new CardViewItemDTO(R.drawable.preparing_image, "두번째"
-                , "설명", "1330원"));
-        cardViewItemDTOs.add(new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                , "설명", "2500원"));
-        cardViewItemDTOs.add(new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                , "설명", "2500원"));
-        cardViewItemDTOs.add(new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                , "설명", "2500원"));
+    public CardRecyclerViewAdapter(CardViewItemDTO[] cardViewItemDTO) {
+        for(int i = 0; i < cardViewItemDTO.length; i++){
+            cardViewItemDTOs.add(cardViewItemDTO[i]);
+        }
     }
 
     @NonNull
