@@ -30,7 +30,7 @@ returnData = "return"
 def update_thread():
     while(1):
         now = datetime.datetime.now()
-        if now.hour == 0 :
+        if now.minute == 59 :
             returnData = update_data()
 
 
@@ -169,7 +169,7 @@ def update_data():
     options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
     options.add_argument("disable-gpu")
-    driver = webdriver.Chrome('/home/ubuntu/Downloads/chromedriver', chrome_options=options)
+    driver = webdriver.Chrome('chromedriver', options = options)
     driver.implicitly_wait(3)
     driver.get(sUrl)
     prevEndCount = "prev"
