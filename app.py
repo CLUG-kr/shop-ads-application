@@ -212,7 +212,7 @@ def update_data():
             print('pass')
         for x in getData[3:11]:
             print(x)
-            returnData += "<h1>" + x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+ x.find('div').getText()+"</h1>"
+            returnData += "<h1>" +"!"+x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+"#"+x.find('div').getText()+"</h1>"
     driver.quit()
     return returnData
 
