@@ -122,5 +122,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onStart();
         updateBottomMenu(this,navigation);
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.finish();
+    }
 
 }

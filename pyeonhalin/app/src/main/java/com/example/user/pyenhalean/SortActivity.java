@@ -16,7 +16,7 @@ public class SortActivity extends BaseActivity {
         RecyclerView recyclerView= (RecyclerView)findViewById(R.id.item_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CardRecyclerViewAdapter(initialCardViewItem()));
-
+        configBottomNavigation(SortActivity.this,navigation);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
     }
 
