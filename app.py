@@ -31,8 +31,14 @@ def update_thread():
     while(1):
         now = datetime.datetime.now()
         if now.minute == 59 :
-            returnData = update_data()
+            make_data()
 
+def make_data():
+    count = 0
+    while count == 0:
+        returnData = update_data()
+        if returnData != "error":
+            count = 1
 
 @app.route('/')
 def hello_world():
@@ -181,6 +187,7 @@ def update_data():
         el = driver.find_element_by_link_text("다음 페이지로 이동")
         WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
         time.sleep(1)
+        count = 0
         while True:
             try:
                 WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.LINK_TEXT,"다음 페이지로 이동")))
@@ -191,6 +198,10 @@ def update_data():
                 print(123)
                 break;
             except selenium.common.exceptions.StaleElementReferenceException:
+                count = count +1
+                if count == 10:
+                    print("error_update")
+                    return "error"
                 time.sleep(1)
 
         '''
@@ -219,7 +230,8 @@ def update_data():
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
     DBinit()
-    returnData = update_data()
+    make_data()
+
     t = threading.Thread(target=update_thread)
     t.start()
-    app.run(host = IP, port = 5010,debug=True)
+    app.run(host = IP, port = 5010, debug=True)
