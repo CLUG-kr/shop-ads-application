@@ -174,8 +174,8 @@ def update_data():
     driver.get(sUrl)
     prevEndCount = "prev"
     global returnData
+    returnData = ""
     while True:
-        time.sleep(3)
         WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
         #driver.find_element_by_xpath('//*[ @ id = "TOTAL"]').click()
         el = driver.find_element_by_link_text("다음 페이지로 이동")
