@@ -17,7 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import threading
-
+import requests
 from datetime import timedelta
 UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
@@ -25,7 +25,7 @@ testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
-returnData = "return"
+returnData = ""
 
 def update_thread():
     while(1):
@@ -33,10 +33,36 @@ def update_thread():
         if now.minute == 59 :
             make_data()
 
+def testCU():
+    session = requests.Session()
+    newUrl = 'http://cu.bgfretail.com/event/plusAjax.do'
+    count = 1
+    global returnData
+    while True:
+        payload = {
+            'pageIndex': count,
+            'listType:': 0,
+            'searchCondition': None
+        }
+        response = session.post(newUrl, data=payload)
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+        products = soup.select('ul>li')
+        if str(products) == '[]':
+            break;
+        for x in products:
+            temp = x.find('p', {'class': 'prodName'})
+            if temp == None:
+                returnData += '<h1>'+x.getText() + '!'
+            else:
+                returnData += temp.getText() + '#<h1>'
+        count += 1
+
+
 def make_data():
     count = 0
     while count == 0:
-        returnData = update_data()
+        returnData = testCU()
         if returnData != "error":
             count = 1
 
@@ -231,7 +257,6 @@ if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
     DBinit()
     make_data()
-
     t = threading.Thread(target=update_thread)
     t.start()
     app.run(host = IP, port = 5010, debug=True)
