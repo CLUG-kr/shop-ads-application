@@ -220,8 +220,7 @@ def updateGS25():
     driver.implicitly_wait(3)
     driver.get(sUrl)
     prevEndCount = "prev"
-    global returnData
-    returnData = ""
+    global returnDataGS25
     while True:
         WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
         #driver.find_element_by_xpath('//*[ @ id = "TOTAL"]').click()
@@ -264,9 +263,9 @@ def updateGS25():
             print('pass')
         for x in getData[3:11]:
             print(x)
-            returnData += "<h1>" +"!"+x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+"#"+x.find('div').getText()+"</h1>"
+            returnDataGS25 += "<h1>" +"!"+x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+"#"+x.find('div').getText()+"</h1>"
     driver.quit()
-    return returnData
+    return returnDataGS25
 
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
