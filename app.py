@@ -38,6 +38,7 @@ def testCU():
     newUrl = 'http://cu.bgfretail.com/event/plusAjax.do'
     count = 1
     global returnData
+    returnData = ''
     while True:
         payload = {
             'pageIndex': count,
@@ -53,12 +54,10 @@ def testCU():
         for x in products:
             temp = x.find('p', {'class': 'prodName'})
             if temp == None:
-                returnData += '<h1>'+x.getText() + '!'
+                returnData += x.getText() + '#<h1>'
             else:
-                returnData += temp.getText() + '#<h1>'
+                returnData += '<h1>' + temp.getText() + '!'
         count += 1
-
-
 def make_data():
     count = 0
     while count == 0:
