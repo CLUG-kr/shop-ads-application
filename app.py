@@ -25,20 +25,22 @@ testDataDB = "testData.db"
 app = Flask(__name__)
 app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
-returnData = ""
+returnDataCU = ""
+returnDataGS25 = ""
 
 def update_thread():
     while(1):
         now = datetime.datetime.now()
         if now.minute == 59 :
-            make_data()
+            updateCU()
+            updateGS25()
 
-def testCU():
+def updateCU():
     session = requests.Session()
     newUrl = 'http://cu.bgfretail.com/event/plusAjax.do'
     count = 1
-    global returnData
-    returnData = ''
+    global returnDataCU
+    returnDataCU = ''
     while True:
         payload = {
             'pageIndex': count,
@@ -54,15 +56,21 @@ def testCU():
         for x in products:
             temp = x.find('p', {'class': 'prodName'})
             if temp == None:
-                returnData += x.getText() + '#<h1>'
+                returnDataCU += x.getText() + '#<h1>'
             else:
-                returnData += '<h1>' + temp.getText() + '!'
+                returnDataCU += '<h1>' + temp.getText() + '!'
         count += 1
+
 def make_data():
     count = 0
+    global returnDataGS25
+    global returnDataCU
     while count == 0:
-        returnData = testCU()
-        if returnData != "error":
+        returnDataCU = updateCU()
+        returnDataGS25 = updateGS25()
+        if returnDataGS25 != "error":
+            count = 1
+        if returnDataCU != "error":
             count = 1
 
 @app.route('/')
@@ -191,10 +199,18 @@ def DBinit():
        conn.close()
 
 @app.route("/test", methods=['GET'])
-def testGS25():
-    return returnData
+def test():
+    return returnDataCU
 
-def update_data():
+@app.route("/testCU", methods=['GET'])
+def testCU():
+    return returnDataCU
+
+@app.route("/testGS25", methods=['GET'])
+def testGS25():
+    return returnDataGS25
+
+def updateGS25():
     sUrl = "http://gs25.gsretail.com/gscvs/ko/products/event-goods"
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
