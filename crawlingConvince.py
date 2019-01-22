@@ -44,7 +44,7 @@ def updateGS25():
     driver.implicitly_wait(3)
     driver.get(sUrl)
     prevEndCount = "prev"
-    global returnDataGS25
+    returnDataGS25 = ""
     while True:
         WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
         #driver.find_element_by_xpath('//*[ @ id = "TOTAL"]').click()
