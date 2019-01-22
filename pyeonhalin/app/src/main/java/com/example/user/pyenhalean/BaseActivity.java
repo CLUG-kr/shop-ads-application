@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,6 +21,21 @@ public class BaseActivity extends AppCompatActivity {
     public static final int INDEX_COMMUNITY_ACTIVITY = 4;
 
     BottomNavigationView navigation;
+    Toolbar myToolbar;
+    ActionBarDrawerToggle dtToggle;
+    DrawerLayout dlDrawer;
+
+    void addToolbar() {
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+
+        dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        dtToggle = new ActionBarDrawerToggle(
+                this, dlDrawer, myToolbar,R.string.app_name, R.string.app_name);
+        dlDrawer.addDrawerListener(dtToggle);
+        dtToggle.syncState();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

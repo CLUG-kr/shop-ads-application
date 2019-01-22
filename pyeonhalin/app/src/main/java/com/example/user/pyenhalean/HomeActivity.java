@@ -1,17 +1,14 @@
 package com.example.user.pyenhalean;
 
-import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends BaseActivity {
@@ -25,15 +22,19 @@ public class HomeActivity extends BaseActivity {
     String state;
     String cookie;
     String ID = "tesdID2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        addToolbar();
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
         testBtn_1 = (Button)findViewById(R.id.test_btn_1);
         testBtn_2 = (Button)findViewById(R.id.test_btn_2);
         testBtn_3 = (Button)findViewById(R.id.test_btn_3);
+
+
 
         configBottomNavigation(HomeActivity.this,navigation);
         Button.OnClickListener onClickListener = new Button.OnClickListener(){
@@ -69,6 +70,8 @@ public class HomeActivity extends BaseActivity {
         testBtn_2.setOnClickListener(onClickListener);
         testBtn_3.setOnClickListener(onClickListener);
     }
+
+
 
     @Override
     protected void onPause() {
