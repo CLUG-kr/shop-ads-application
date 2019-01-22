@@ -29,7 +29,8 @@ def updateCU():
             if temp == None:
                 returnDataCU += x.getText() + '#<h1>'
             else:
-                returnDataCU += '<h1>' + temp.getText() + '!'
+                price = x.find('p', {'class': 'prodPrice'})
+                returnDataCU += '<h1>' + temp.getText() + '!' +  price.getText()+ '!'
         count += 1
         return returnDataCU
 
@@ -87,6 +88,6 @@ def updateGS25():
             print('pass')
         for x in getData[3:11]:
             print(x)
-            returnDataGS25 += "<h1>" +"!"+x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+"#"+x.find('div').getText()+"</h1>"
+            returnDataGS25 += "<h1>"+x.find('p',{'class':'tit'}).getText() +"!"+ x.find('span').getText()+"!"+x.find('div').getText()+"#</h1>"
     driver.quit()
     return returnDataGS25
