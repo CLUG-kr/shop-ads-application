@@ -14,7 +14,7 @@ public class SortActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort);
-
+        addToolbar();
         RecyclerView recyclerView= (RecyclerView)findViewById(R.id.item_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CardRecyclerViewAdapter(initialCardViewItem()));

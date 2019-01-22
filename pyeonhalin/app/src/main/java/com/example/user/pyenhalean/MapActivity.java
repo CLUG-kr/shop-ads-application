@@ -10,6 +10,7 @@ public class MapActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        addToolbar();
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         configBottomNavigation(MapActivity.this,navigation);
     }
