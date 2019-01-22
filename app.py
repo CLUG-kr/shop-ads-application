@@ -1,24 +1,11 @@
-from flask import Flask, request, send_from_directory, url_for, redirect, abort, jsonify, render_template, session, \
-    make_response
+from flask import Flask, request, render_template,make_response
 import sqlite3
-import socket
 import os
 import hashlib
-import time
-
-import selenium
-from selenium import webdriver
-from bs4 import BeautifulSoup
+import crawlingConvince as CC
 import socket
 import datetime
 import threading
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
-import threading
-import requests
-from datetime import timedelta
 UPLOAD_FOLDER = "./database"
 userManageDB = 'userManage.db'
 testDataDB = "testData.db"
@@ -31,43 +18,19 @@ returnDataGS25 = ""
 def update_thread():
     while(1):
         now = datetime.datetime.now()
+        global returnDataGS25
+        global returnDataCU
         if now.minute == 59 :
-            updateCU()
-            updateGS25()
-
-def updateCU():
-    session = requests.Session()
-    newUrl = 'http://cu.bgfretail.com/event/plusAjax.do'
-    count = 1
-    global returnDataCU
-    returnDataCU = ''
-    while True:
-        payload = {
-            'pageIndex': count,
-            'listType:': 0,
-            'searchCondition': None
-        }
-        response = session.post(newUrl, data=payload)
-
-        soup = BeautifulSoup(response.text, 'html.parser')
-        products = soup.select('ul>li')
-        if str(products) == '[]':
-            break;
-        for x in products:
-            temp = x.find('p', {'class': 'prodName'})
-            if temp == None:
-                returnDataCU += x.getText() + '#<h1>'
-            else:
-                returnDataCU += '<h1>' + temp.getText() + '!'
-        count += 1
+            returnDataCU = CC.updateCU()
+            returnDataGS25 = CC.updateGS25()
 
 def make_data():
     count = 0
     global returnDataGS25
     global returnDataCU
     while count == 0:
-        returnDataCU = updateCU()
-        returnDataGS25 = updateGS25()
+        returnDataCU = CC.updateCU()
+        returnDataGS25 = CC.updateGS25()
         if returnDataGS25 != "error":
             count = 1
         if returnDataCU != "error":
@@ -210,67 +173,12 @@ def testCU():
 def testGS25():
     return returnDataGS25
 
-def updateGS25():
-    sUrl = "http://gs25.gsretail.com/gscvs/ko/products/event-goods"
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("disable-gpu")
-    driver = webdriver.Chrome('chromedriver', options = options)
-    driver.implicitly_wait(3)
-    driver.get(sUrl)
-    prevEndCount = "prev"
-    global returnDataGS25
-    while True:
-        WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
-        #driver.find_element_by_xpath('//*[ @ id = "TOTAL"]').click()
-        el = driver.find_element_by_link_text("다음 페이지로 이동")
-        WebDriverWait(driver, 100).until(EC.invisibility_of_element_located((By.CLASS_NAME, "blockUI blockOverlay")))
-        time.sleep(1)
-        count = 0
-        while True:
-            try:
-                WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.LINK_TEXT,"다음 페이지로 이동")))
-                driver.execute_script("scroll(0, 1500)");
-                time.sleep(1)
-                print("t")
-                driver.execute_script("arguments[0].click();", el)
-                print(123)
-                break;
-            except selenium.common.exceptions.StaleElementReferenceException:
-                count = count +1
-                if count == 10:
-                    print("error_update")
-                    return "error"
-                time.sleep(1)
-
-        '''
-        for x in linkList:
-            if x.getAttribute("href").contains('#next;'):
-                x.click()
-                break
-        '''
-
-        getHTML = driver.page_source
-        soup = BeautifulSoup(getHTML, 'html.parser')
-        getData = soup.findAll('div', {'class' : 'prod_box'})
-
-        endCount = getData[3].find('p',{'class':'tit'}).getText()
-        if endCount == prevEndCount:
-            break;
-        else :
-            prevEndCount = endCount
-            print('pass')
-        for x in getData[3:11]:
-            print(x)
-            returnDataGS25 += "<h1>" +"!"+x.find('p',{'class':'tit'}).getText() +"#"+ x.find('span').getText()+"#"+x.find('div').getText()+"</h1>"
-    driver.quit()
-    return returnDataGS25
 
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
     DBinit()
-    make_data()
+    returnDataCU = CC.updateCU()
+    returnDataGS25 = CC.updateGS25()
     t = threading.Thread(target=update_thread)
     t.start()
     app.run(host = IP, port = 5010, debug=True)
