@@ -26,26 +26,28 @@ public class SortActivity extends BaseActivity {
     }
 
     CardViewItemDTO[] initialCardViewItem(){
-        CardViewItemDTO[] returnCardViewItemDTO = new CardViewItemDTO[5];
+        CardViewItemDTO[] returnCardViewItemDTO;
         GetHTMLTask taskTestData = new GetHTMLTask();
+        String[] data = new String[3];
         try {
-            String response = taskTestData.execute("test").get();
-            returnCardViewItemDTO[0] = new CardViewItemDTO(R.drawable.preparing_image, "첫번째"
-                    , response, String.valueOf(response.length()));
-            returnCardViewItemDTO[1] = new CardViewItemDTO(R.drawable.preparing_image, "두번째"
-                    , "213", "1330원");
-            returnCardViewItemDTO[2] = new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                    , "설명", "2500원");
-            returnCardViewItemDTO[3] = new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                    , "설명", "2500원");
-            returnCardViewItemDTO[4] = new CardViewItemDTO(R.drawable.preparing_image, "세번째"
-                    , "설명", "2500원");
+            String[] response = taskTestData.execute("testGS25").get().substring(1).split("!");
+            returnCardViewItemDTO = new CardViewItemDTO[response.length];
+            for(int i = 0; i < response.length; i++){
+                if (response[i].split("#").length != 3){
+                    data[0] = data[1] = data[2] = response[i].split("#")[0];
+                }
+                else
+                    data = response[i].split("#");
+                returnCardViewItemDTO[i] = new CardViewItemDTO(R.drawable.preparing_image
+                        , data[0],data[2] + " 행사", data[1]);
+            }
             return returnCardViewItemDTO;
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         };
+        returnCardViewItemDTO = new CardViewItemDTO[5];
         returnCardViewItemDTO[0] = new CardViewItemDTO(R.drawable.preparing_image, "첫번째"
                 , "설명", "1500원");
         returnCardViewItemDTO[1] = new CardViewItemDTO(R.drawable.preparing_image, "두번째"
