@@ -29,14 +29,13 @@ public class BaseActivity extends AppCompatActivity {
     void addToolbar() {
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dtToggle = new ActionBarDrawerToggle(
                 this, dlDrawer, myToolbar,R.string.app_name, R.string.app_name);
         dlDrawer.addDrawerListener(dtToggle);
         dtToggle.syncState();
     }
+
     protected void setDisplayHomeBtnEnabled(boolean b){
         getSupportActionBar().setDisplayHomeAsUpEnabled(b);
         getSupportActionBar().setDisplayShowHomeEnabled(b);
