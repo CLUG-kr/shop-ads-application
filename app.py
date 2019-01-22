@@ -20,7 +20,7 @@ def update_thread():
         now = datetime.datetime.now()
         global returnDataGS25
         global returnDataCU
-        if now.minute == 59 :
+        if now.minute == 59 and now.second == 59:
             returnDataCU = CC.updateCU()
             returnDataGS25 = CC.updateGS25()
 
