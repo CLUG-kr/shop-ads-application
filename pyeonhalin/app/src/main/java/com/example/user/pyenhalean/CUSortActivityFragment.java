@@ -29,16 +29,16 @@ public class CUSortActivityFragment extends Fragment {
         GetHTMLTask taskTestData = new GetHTMLTask();
         String[] data = new String[2];
         try {
-            String[] response = taskTestData.execute("testCU").get().substring(1).split("#");
+            String[] response = taskTestData.execute("testCU").get().split("#");
             returnCardViewItemDTO = new CardViewItemDTO[response.length];
             for(int i = 0; i < response.length; i++){
-                if (response[i].split("!").length != 2){
-                    data[0] = data[1] = response[i].split("!")[0];
+                if (response[i].split("!").length != 3){
+                    data[0] = data[1] = data[2] = response[i].split("!")[0];
                 }
                 else
                     data = response[i].split("!");
                 returnCardViewItemDTO[i] = new CardViewItemDTO(R.drawable.preparing_image
-                        , data[0],data[1] + " 행사", "추가예정");
+                        , data[0],data[2] + " 행사", data[1]);
             }
             return returnCardViewItemDTO;
         } catch (ExecutionException e) {

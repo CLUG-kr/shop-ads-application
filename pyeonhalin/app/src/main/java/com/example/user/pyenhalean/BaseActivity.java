@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -36,6 +37,11 @@ public class BaseActivity extends AppCompatActivity {
         dlDrawer.addDrawerListener(dtToggle);
         dtToggle.syncState();
     }
+    protected void setDisplayHomeBtnEnabled(boolean b){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(b);
+        getSupportActionBar().setDisplayShowHomeEnabled(b);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,7 +53,20 @@ public class BaseActivity extends AppCompatActivity {
         super.finish();
         overridePendingTransition(0, 0);
     }
-
+/*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu1:
+                Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu2:
+                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+*/
     public void configBottomNavigation(final Context context, BottomNavigationView navigation) {
         final int contextIndex = getContextIndex(context);
 

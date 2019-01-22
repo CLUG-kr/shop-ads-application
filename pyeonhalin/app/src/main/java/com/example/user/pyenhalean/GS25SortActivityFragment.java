@@ -29,14 +29,14 @@ public class GS25SortActivityFragment extends Fragment {
         GetHTMLTask taskTestData = new GetHTMLTask();
         String[] data = new String[3];
         try {
-            String[] response = taskTestData.execute("testGS25").get().substring(1).split("!");
+            String[] response = taskTestData.execute("testGS25").get().substring(1).split("#");
             returnCardViewItemDTO = new CardViewItemDTO[response.length];
             for(int i = 0; i < response.length; i++){
-                if (response[i].split("#").length != 3){
-                    data[0] = data[1] = data[2] = response[i].split("#")[0];
+                if (response[i].split("!").length != 3){
+                    data[0] = data[1] = data[2] = response[i].split("!")[0];
                 }
                 else
-                    data = response[i].split("#");
+                    data = response[i].split("!");
                 returnCardViewItemDTO[i] = new CardViewItemDTO(R.drawable.preparing_image
                         , data[0],data[2] + " 행사", data[1]);
             }
