@@ -270,7 +270,9 @@ def updateGS25():
 if __name__ == '__main__':
     IP = str(socket.gethostbyname(socket.gethostname()))
     DBinit()
-    make_data()
+    #make_data()
+    updateCU()
+    updateGS25()
     t = threading.Thread(target=update_thread)
     t.start()
     app.run(host = IP, port = 5010, debug=True)
