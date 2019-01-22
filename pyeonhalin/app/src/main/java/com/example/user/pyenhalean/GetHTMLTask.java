@@ -53,7 +53,7 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
                 element = doc.select("h1");
                 returnString = element.text();
             }
-            else if(parm[0].equals("test")){
+            else if(parm[0].equals("testCU")){
                 doc = Jsoup.connect(sUrl+parm[0]).get();
                 element = doc.select("h1");
                 returnString = element.text();
