@@ -55,7 +55,7 @@ public class HomeActivity extends BaseActivity {
                         break;
                     case R.id.test_btn_3:
                         GetHTMLTask taskTestData = new GetHTMLTask();
-                        testBtn_3.setText(taskTestData.execute("test").get().split("!")[1]);
+                        testBtn_3.setText(taskTestData.execute("test").get().split("#")[1]);
                 }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
