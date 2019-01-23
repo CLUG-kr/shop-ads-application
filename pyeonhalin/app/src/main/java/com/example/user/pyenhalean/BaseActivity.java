@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int INDEX_MAP_ACTIVITY = 0;
     public static final int INDEX_SORT_ACTIVITY = 1;
@@ -34,6 +36,8 @@ public class BaseActivity extends AppCompatActivity {
                 this, dlDrawer, myToolbar,R.string.app_name, R.string.app_name);
         dlDrawer.addDrawerListener(dtToggle);
         dtToggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     protected void setDisplayHomeBtnEnabled(boolean b){
@@ -55,14 +59,7 @@ public class BaseActivity extends AppCompatActivity {
 /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu1:
-                Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu2:
-                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
-                return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 */
@@ -157,5 +154,33 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         updateBottomMenu(this,navigation);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId()){
+            case R.id.like_market:
+                Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.part_event:
+                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.setting:
+                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
