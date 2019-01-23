@@ -81,5 +81,6 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+database/*.db
 userManage.db
 # End of https://www.gitignore.io/api/pycharm
