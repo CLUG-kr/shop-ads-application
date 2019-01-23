@@ -14,7 +14,7 @@ app.secret_key = 'We are Fried Chicken Dinner!!!!'
 
 returnDataCU = ""
 returnDataGS25 = ""
-
+loginData = {}
 def update_thread():
     while(1):
         now = datetime.datetime.now()
@@ -78,6 +78,7 @@ def signIn():
     username = request.form['id']
     password = request.form['pw']
     time = request.form['time']
+    global loginData
     dbPassword = hashlib.md5(password.encode()).hexdigest()
     curs.execute("SELECT * FROM userManage")
     Access = False
@@ -93,6 +94,8 @@ def signIn():
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
         data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
+        loginData[username] = userKey
+        print(username + '#' + userKey)
         resp = make_response(data)
         resp.set_cookie(username, userKey)
     conn.commit()
@@ -104,10 +107,11 @@ def testData_render():
     return render_template('test_data.html')
 @app.route("/testData", methods=['POST','GET'])
 def testData():
+    global loginData
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,testDataDB))
     curs = conn.cursor()
     username = request.form['id']
-    userKey = request.form['key']
+    userKey = loginData[username]
     if username in request.cookies:
         cookieKey = request.cookies.get(username)
     else :
