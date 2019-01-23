@@ -5,30 +5,22 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-
-            android:title="Import" />
+            android:id="@+id/like_market"
+            android:title="관심등록 매장" />
         <item
-            android:id="@+id/nav_gallery"
-
-            android:title="Gallery" />
+            android:id="@+id/recent_market"
+            android:title="최근 본 매장" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/part_event"
+            android:title="이벤트 참여내역" />
 
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Extra">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:title="Send" />
+                android:id="@+id/setting"
+                android:title="설정" />
         </menu>
     </item>
 
