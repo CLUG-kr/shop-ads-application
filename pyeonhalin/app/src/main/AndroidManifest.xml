@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.pyenhalean">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <meta-data android:name="com.kakao.sdk.AppKey" android:value="ca8a6186784a7e0ff0eec78326981ebb"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

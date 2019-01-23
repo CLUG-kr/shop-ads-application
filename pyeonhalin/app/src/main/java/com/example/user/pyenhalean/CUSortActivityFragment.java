@@ -27,7 +27,7 @@ public class CUSortActivityFragment extends Fragment {
     CardViewItemDTO[] initialCardViewItem(){
         CardViewItemDTO[] returnCardViewItemDTO;
         GetHTMLTask taskTestData = new GetHTMLTask();
-        String[] data = new String[2];
+        String[] data = new String[3];
         try {
             String[] response = taskTestData.execute("testCU").get().split("#");
             returnCardViewItemDTO = new CardViewItemDTO[response.length];
