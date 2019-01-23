@@ -40,8 +40,13 @@ def make_data():
 
 @app.route('/')
 def hello_world():
-    make_data()
+
     return render_template('index.html')
+
+@app.route('/update')
+def update_convinceData():
+    make_data()
+    return 'true'
 
 @app.route("/signUp", methods=['GET'])
 def signUp_render():
