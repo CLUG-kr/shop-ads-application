@@ -1,4 +1,4 @@
-package com.example.user.pyenhalean;
+package com.example.user.pyenhalean.model;
 
 public class CardViewItemDTO {
     public int imageView;

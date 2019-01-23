@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.user.pyenhalean.model.CardViewItemDTO;
+import com.example.user.pyenhalean.model.StoreItem;
+
 import java.util.concurrent.ExecutionException;
 
 public class GS25SortActivityFragment extends Fragment {

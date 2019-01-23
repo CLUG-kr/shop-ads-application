@@ -1,4 +1,4 @@
-package activity;
+package com.example.user.pyenhalean.activity;
 
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;

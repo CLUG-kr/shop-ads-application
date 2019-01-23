@@ -16,41 +16,41 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/cardView_image"
+                android:id="@+id/storeCardView_image"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/cardView_title"
+                android:id="@+id/storeCardView_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/cardView_image"
+                android:layout_toEndOf="@+id/storeCardView_image"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="이름" />
+                android:text="가게 이름" />
 
             <TextView
-                android:id="@+id/cardView_subtitle"
+                android:id="@+id/storeCardView_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardView_title"
-                android:layout_toEndOf="@+id/cardView_image"
+                android:layout_below="@+id/storeCardView_title"
+                android:layout_toEndOf="@+id/storeCardView_image"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="상세" />
+                android:text="소개" />
 
             <TextView
-                android:id="@+id/cardView_price"
+                android:id="@+id/storeCardView_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardView_subtitle"
-                android:layout_toEndOf="@+id/cardView_image"
                 android:layout_alignParentRight="true"
+                android:layout_below="@+id/storeCardView_subtitle"
+                android:layout_marginRight="53dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="53dp"
-                android:text="가격" />
+                android:layout_toEndOf="@+id/storeCardViw_image"
+                android:text="위치" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

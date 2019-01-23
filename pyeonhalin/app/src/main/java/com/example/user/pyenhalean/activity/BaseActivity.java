@@ -1,4 +1,4 @@
-package activity;
+package com.example.user.pyenhalean.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -151,6 +151,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         MenuItem menuItem = menu.getItem(getContextIndex(context));
         menuItem.setChecked(true);
     }
+    public void updateBottomMenu(int contextIndex, BottomNavigationView navigation) {
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(contextIndex);
+        menuItem.setChecked(true);
+    }
 
     @Override
     protected void onStart() {
@@ -165,8 +170,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             case R.id.like_market:
                 Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.part_event:
-                Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+            case R.id.recent_market:
+                Intent intent = new Intent(BaseActivity.this, RecentlyViewedActivity.class);
+                intent.putExtra("prevActivity",getContextIndex(this));
+                startActivity(intent);
                 break;
             case R.id.setting:
                 Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();

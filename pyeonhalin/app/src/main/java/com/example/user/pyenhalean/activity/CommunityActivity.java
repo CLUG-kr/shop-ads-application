@@ -1,19 +1,19 @@
-package activity;
+package com.example.user.pyenhalean.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.os.Bundle;
 
 import com.example.user.pyenhalean.R;
 
-public class EventActivity extends BaseActivity {
+public class CommunityActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_community);
         addToolbar();
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        configBottomNavigation(EventActivity.this,navigation);
+        configBottomNavigation(CommunityActivity.this,navigation);
     }
 
 }
