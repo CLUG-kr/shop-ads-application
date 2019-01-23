@@ -1,4 +1,4 @@
-package com.example.user.pyenhalean;
+package activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.user.pyenhalean.R;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

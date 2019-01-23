@@ -1,15 +1,14 @@
-package com.example.user.pyenhalean;
+package activity;
 
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import java.util.concurrent.ExecutionException;
+import com.example.user.pyenhalean.CUSortActivityFragment;
+import com.example.user.pyenhalean.GS25SortActivityFragment;
+import com.example.user.pyenhalean.R;
+import com.example.user.pyenhalean.TabBarAdapter;
 
 public class SortActivity extends BaseActivity {
     private ViewPager viewPager;

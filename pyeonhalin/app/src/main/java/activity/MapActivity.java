@@ -1,8 +1,9 @@
-package com.example.user.pyenhalean;
+package activity;
 
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.user.pyenhalean.R;
 
 public class MapActivity extends BaseActivity {
 
