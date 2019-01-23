@@ -40,7 +40,7 @@ def make_data():
 
 @app.route('/')
 def hello_world():
-    DBinit()
+    make_data()
     return render_template('index.html')
 
 @app.route("/signUp", methods=['GET'])
