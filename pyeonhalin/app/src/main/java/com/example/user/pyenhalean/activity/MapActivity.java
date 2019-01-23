@@ -2,8 +2,10 @@ package com.example.user.pyenhalean.activity;
 
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.example.user.pyenhalean.R;
+
 
 public class MapActivity extends BaseActivity {
 
@@ -12,7 +14,9 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         addToolbar();
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         configBottomNavigation(MapActivity.this,navigation);
     }
+
 }

@@ -32,7 +32,7 @@ public class GS25SortActivityFragment extends Fragment {
         GetHTMLTask taskTestData = new GetHTMLTask();
         String[] data = new String[3];
         try {
-            String[] response = taskTestData.execute("testGS25").get().substring(1).split("#");
+            String[] response = taskTestData.execute("testGS25").get().split("#");
             returnCardViewItemDTO = new CardViewItemDTO[response.length];
             for(int i = 0; i < response.length; i++){
                 if (response[i].split("!").length != 3){
