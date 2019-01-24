@@ -135,7 +135,7 @@ def signIn():
         return data
     else :
         userKey = str(hashlib.md5((username+time).encode()).hexdigest())
-        data = "<h1>success<h1>" + "<h1>" + userKey + "<h1>"
+        data = "<h1>success</h1>" + "<h1>" + userKey + "</h1>" + "<h1>" + loginType[username] + "</h1>"
         loginData[username] = userKey
         print(username + '#' + userKey)
         resp = make_response(data)
