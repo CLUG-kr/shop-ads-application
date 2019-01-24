@@ -36,7 +36,13 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
             if(parm[0].equals("signIn")){
                 res = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).data("time", parm[3]).method(Connection.Method.POST).execute();
                 element = res.parse().select("h1");
-                returnString = element.get(0).text() + "#" + element.get(2).text() + "#" + res.cookie(parm[1]);
+                if(element.size() == 3){
+                    returnString = element.get(0).text() + "#" + element.get(1).text() + "#" +element.get(2).text() + "#"+ res.cookie(parm[1]);
+                }
+                else {
+                    returnString = element.get(0).text();
+                }
+
             }
             else if(parm[0].equals("signUp")){
                 res = Jsoup.connect(sUrl + parm[0]).data("id", parm[1]).data("pw", parm[2]).method(Connection.Method.POST).execute();

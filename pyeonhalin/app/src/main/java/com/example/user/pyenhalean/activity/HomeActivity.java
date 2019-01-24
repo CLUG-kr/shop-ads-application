@@ -22,7 +22,7 @@ public class HomeActivity extends BaseActivity {
     String state;
     String cookie;
     String ID = "tesdID2";
-
+    String userMode = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +50,17 @@ public class HomeActivity extends BaseActivity {
                     case R.id.test_btn_2:
                         GetHTMLTask taskSignIn = new GetHTMLTask();
                         taskResult = taskSignIn.execute("signIn", ID, "testPW",String.valueOf(System.currentTimeMillis())).get().split("#");
-                        key = taskResult[1];
-                        cookie = taskResult[2];
-                        testBtn_1.setText(key);
+                        if(taskResult.length == 4){
+                            key = taskResult[1];
+                            userMode = taskResult[2];
+                            cookie = taskResult[3];
+                            testBtn_1.setText(key);
+                            testBtn_2.setText(userMode);
+                        }
+                        else {
+                            testBtn_1.setText("error");
+                        }
+
                         break;
                     case R.id.test_btn_3:
                         GetHTMLTask taskTestData = new GetHTMLTask();
