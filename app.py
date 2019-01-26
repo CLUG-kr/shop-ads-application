@@ -238,6 +238,10 @@ def logout():
     else :
         return "<h1>error_not_login</h1>"
 
+@app.route("/inputAddress", methods=['GET'])
+def logout_render():
+        return render_template('input_address(daum).html')
+
 def DBinit():
     if not os.path.isdir(UPLOAD_FOLDER):
         os.mkdir(UPLOAD_FOLDER)
