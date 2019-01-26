@@ -165,7 +165,10 @@ def testData():
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,testDataDB))
     curs = conn.cursor()
     username = request.form['id']
-    userKey = loginData[username]
+    if username in loginData:
+        userKey = loginData[username]
+    else :
+        return "<h1>wrong access<h1>"
     if username in request.cookies:
         cookieKey = request.cookies.get(username)
     else :
