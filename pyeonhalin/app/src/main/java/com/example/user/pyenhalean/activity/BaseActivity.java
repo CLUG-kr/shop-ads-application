@@ -1,5 +1,7 @@
 package com.example.user.pyenhalean.activity;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,12 +18,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.HeadbarSharePreferences;
 import com.example.user.pyenhalean.R;
+import com.example.user.pyenhalean.model.Headbar;
+import com.example.user.pyenhalean.*;
+
+import java.util.concurrent.ExecutionException;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,16 +39,30 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public static final int INDEX_EVENT_ACTIVITY = 3;
     public static final int INDEX_COMMUNITY_ACTIVITY = 4;
 
+    private Activity sApplication;
     BottomNavigationView navigation;
     Toolbar myToolbar;
     ActionBarDrawerToggle dtToggle;
     DrawerLayout dlDrawer;
     NavigationView navigationView;
     View headView;
+    Headbar headbar;
     TextView nameTV;
     TextView idTV;
     TextView keyTV;
+    TextView loginOKTV;
+    Button loginButton;
+    Button logoutButton;
     SharedPreferences loginData;
+
+    String cookie;
+
+
+
+
+    public Context getContext() {
+        return sApplication.getApplicationContext();
+    }
 
     void addToolbar() {
         String tempID = "", tempName = "", tempKey = "";
@@ -54,17 +76,29 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headView = navigationView.getHeaderView(0);
+        headLinkViewID();
+        loginData = getSharedPreferences("loginData", MODE_PRIVATE);
+        loginLoad();
+        sApplication = this;
+    }
+
+    private void headLinkViewID() {
         nameTV = headView.findViewById(R.id.headNameTV);
         idTV = headView.findViewById(R.id.headIDTV);
         keyTV = headView.findViewById(R.id.headKeyTV);
-        loginData = getSharedPreferences("loginData", MODE_PRIVATE);
-        load();
+        loginOKTV = headView.findViewById(R.id.headLoginOKTV);
+        loginButton = headView.findViewById(R.id.loginButton);
+        logoutButton = headView.findViewById(R.id.logoutButton);
+
+        loginButton.setOnClickListener(onclickListener);
+        logoutButton.setOnClickListener(onclickListener);
     }
 
-    private void setHeadbarData(String tempID, String tempName, String tempKey) {
+    private void setHeadbarData(String tempID, String tempName, String tempKey, String loginOK) {
         nameTV.setText(tempName);
         idTV.setText(tempID);
         keyTV.setText(tempKey);
+        loginOKTV.setText(loginOK);
     }
 
     protected void setDisplayHomeBtnEnabled(boolean b){
@@ -218,27 +252,85 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void save(String ID, String name, String key) {
+    public void loginSave(String ID, String name, String key, String loginOK) {
         // SharedPreferences 객체만으론 저장 불가능 Editor 사용
         SharedPreferences.Editor editor = loginData.edit();
 
         // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
         // 저장시킬 이름이 이미 존재하면 덮어씌움
-        editor.putString("id", ID);
-        editor.putString("name", name);
-        editor.putString("key",key);
+        if(loginOK.equals("false")){
+            editor.putString("id", "로그인을 해주세요.");
+            editor.putString("name", "");
+            editor.putString("key", "");
+            editor.putString("loginOK", "false");
+            GetHTMLTask task = new GetHTMLTask();
+            try {
+                task.execute("logout", ID,key).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            editor.putString("id", ID);
+            editor.putString("name", name);
+            editor.putString("key",key);
+            editor.putString("loginOK", loginOK);
+        }
+
+
         editor.apply();
     }
 
     // 설정값을 불러오는 함수
-    public void load() {
+    public void loginLoad() {
         // SharedPreferences 객체.get타입( 저장된 이름, 기본값 )
         // 저장된 이름이 존재하지 않을 시 기본값
-        String ID = loginData.getString("id", "null");
-        String name = loginData.getString("name", "null");
-        String key = loginData.getString("key", "null");
-        setHeadbarData(ID, name, key);
+        String loginOK = loginData.getString("loginOK","");
+        String ID = loginData.getString("id", "");
+        String name = loginData.getString("name", "");
+        String key = loginData.getString("key", "");
+        setHeadbarData(ID, name, key,loginOK);
+        if(loginOK.equals("true")){
+            logoutButton.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.GONE);
+        }
+        else {
+            logoutButton.setVisibility(View.GONE);
+            loginButton.setVisibility(View.VISIBLE);
+        }
     }
+    Button.OnClickListener onclickListener = new Button.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.loginButton:
+                    LoginDialog myLoginDialog = new LoginDialog(sApplication);
+                    myLoginDialog.setLoginDialogListener(new LoginDialogListener(){
+                        @Override
+                        public void onPositiveClicked(String id, String pw, String key, String cookie1) {
+                            loginSave(id,"name", key, "true");
+                            loginLoad();
+                            cookie = cookie1;
+                            Toast.makeText(getContext(), "로그인 성공!", Toast.LENGTH_LONG).show();
+                        }
+                        @Override
+                        public void onNegativeClicked() {
+
+                        }
+                    });
+                    myLoginDialog.show();
+                    break;
+                case R.id.logoutButton:
+                    loginSave("null","null", "null", "false");
+                    loginLoad();
+                    break;
+
+            }
+        }
+
+    };
 
 
 }

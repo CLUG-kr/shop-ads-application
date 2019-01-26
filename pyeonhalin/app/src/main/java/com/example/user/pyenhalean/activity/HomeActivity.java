@@ -1,15 +1,12 @@
 package com.example.user.pyenhalean.activity;
 
-import android.content.SharedPreferences;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.user.pyenhalean.GetHTMLTask;
-import com.example.user.pyenhalean.HeadbarSharePreferences;
 import com.example.user.pyenhalean.R;
 
 import java.util.concurrent.ExecutionException;
@@ -21,8 +18,7 @@ public class HomeActivity extends BaseActivity {
     Button testBtn_3;
 
     String[] taskResult;
-    String state;
-    String cookie;
+    String state;;
     String ID = "tesdID2";
     String userMode = "";
 
@@ -32,12 +28,13 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         addToolbar();
 
+        testBtn_1 = findViewById(R.id.test_btn_1);
+        testBtn_2 = findViewById(R.id.test_btn_2);
+        testBtn_3 = findViewById(R.id.test_btn_3);
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        testBtn_1 = (Button)findViewById(R.id.test_btn_1);
-        testBtn_2 = (Button)findViewById(R.id.test_btn_2);
-        testBtn_3 = (Button)findViewById(R.id.test_btn_3);
-
-
+        GetHTMLTask taskTestData = new GetHTMLTask();
+        taskTestData.execute("testData",ID,keyTV.getText().toString());
 
         configBottomNavigation(HomeActivity.this,navigation);
         Button.OnClickListener onClickListener = new Button.OnClickListener(){
@@ -55,10 +52,8 @@ public class HomeActivity extends BaseActivity {
                         taskResult = taskSignIn.execute("signIn", ID, "testPW",String.valueOf(System.currentTimeMillis())).get().split("#");
                         if(taskResult.length == 4){
                             cookie = taskResult[3];
-                            nameTV.setText(userMode);
-                            idTV.setText(ID);
-                            save(ID,taskResult[2],taskResult[1]);
-                            load();
+                            loginSave(ID,taskResult[2],taskResult[1],"true");
+                            loginLoad();
                         }
                         else {
                             testBtn_1.setText("error");
@@ -66,8 +61,7 @@ public class HomeActivity extends BaseActivity {
 
                         break;
                     case R.id.test_btn_3:
-                        GetHTMLTask taskTestData = new GetHTMLTask();
-                        testBtn_3.setText(taskTestData.execute("testData",ID,keyTV.getText().toString()).get());
+
                 }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

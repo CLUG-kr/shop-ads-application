@@ -69,6 +69,11 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
                 element = doc.select("h1");
                 returnString = element.text();
             }
+            else if(parm[0].equals("logout")){
+                doc = Jsoup.connect(sUrl+parm[0]).data("id",parm[1]).post();
+                element = doc.select("h1");
+                returnString = element.text();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

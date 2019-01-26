@@ -11,6 +11,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.EventActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="604dp"
+        android:layout_marginTop="56dp"
+        android:orientation="vertical"
+        android:weightSum="5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Result" />
+    </LinearLayout>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +66,6 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="230dp"
         tools:ignore="MissingConstraints" />
-
 </android.support.constraint.ConstraintLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
