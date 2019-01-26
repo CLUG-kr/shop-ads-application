@@ -1,12 +1,15 @@
 package com.example.user.pyenhalean.activity;
 
+import android.content.SharedPreferences;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.user.pyenhalean.GetHTMLTask;
+import com.example.user.pyenhalean.HeadbarSharePreferences;
 import com.example.user.pyenhalean.R;
 
 import java.util.concurrent.ExecutionException;
@@ -18,18 +21,18 @@ public class HomeActivity extends BaseActivity {
     Button testBtn_3;
 
     String[] taskResult;
-    String key;
     String state;
     String cookie;
     String ID = "tesdID2";
     String userMode = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         addToolbar();
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         testBtn_1 = (Button)findViewById(R.id.test_btn_1);
         testBtn_2 = (Button)findViewById(R.id.test_btn_2);
         testBtn_3 = (Button)findViewById(R.id.test_btn_3);
@@ -51,11 +54,11 @@ public class HomeActivity extends BaseActivity {
                         GetHTMLTask taskSignIn = new GetHTMLTask();
                         taskResult = taskSignIn.execute("signIn", ID, "testPW",String.valueOf(System.currentTimeMillis())).get().split("#");
                         if(taskResult.length == 4){
-                            key = taskResult[1];
-                            userMode = taskResult[2];
                             cookie = taskResult[3];
-                            testBtn_1.setText(key);
-                            testBtn_2.setText(userMode);
+                            nameTV.setText(userMode);
+                            idTV.setText(ID);
+                            save(ID,taskResult[2],taskResult[1]);
+                            load();
                         }
                         else {
                             testBtn_1.setText("error");
@@ -64,7 +67,7 @@ public class HomeActivity extends BaseActivity {
                         break;
                     case R.id.test_btn_3:
                         GetHTMLTask taskTestData = new GetHTMLTask();
-                        testBtn_3.setText(taskTestData.execute("testData",ID,key).get());
+                        testBtn_3.setText(taskTestData.execute("testData",ID,keyTV.getText().toString()).get());
                 }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -2,6 +2,7 @@ package com.example.user.pyenhalean.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,10 +12,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.pyenhalean.HeadbarSharePreferences;
 import com.example.user.pyenhalean.R;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,8 +35,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     Toolbar myToolbar;
     ActionBarDrawerToggle dtToggle;
     DrawerLayout dlDrawer;
+    NavigationView navigationView;
+    View headView;
+    TextView nameTV;
+    TextView idTV;
+    TextView keyTV;
+    SharedPreferences loginData;
 
     void addToolbar() {
+        String tempID = "", tempName = "", tempKey = "";
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -38,8 +51,20 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 this, dlDrawer, myToolbar,R.string.app_name, R.string.app_name);
         dlDrawer.addDrawerListener(dtToggle);
         dtToggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        headView = navigationView.getHeaderView(0);
+        nameTV = headView.findViewById(R.id.headNameTV);
+        idTV = headView.findViewById(R.id.headIDTV);
+        keyTV = headView.findViewById(R.id.headKeyTV);
+        loginData = getSharedPreferences("loginData", MODE_PRIVATE);
+        load();
+    }
+
+    private void setHeadbarData(String tempID, String tempName, String tempKey) {
+        nameTV.setText(tempName);
+        idTV.setText(tempID);
+        keyTV.setText(tempKey);
     }
 
     protected void setDisplayHomeBtnEnabled(boolean b){
@@ -192,4 +217,28 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+    public void save(String ID, String name, String key) {
+        // SharedPreferences 객체만으론 저장 불가능 Editor 사용
+        SharedPreferences.Editor editor = loginData.edit();
+
+        // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
+        // 저장시킬 이름이 이미 존재하면 덮어씌움
+        editor.putString("id", ID);
+        editor.putString("name", name);
+        editor.putString("key",key);
+        editor.apply();
+    }
+
+    // 설정값을 불러오는 함수
+    public void load() {
+        // SharedPreferences 객체.get타입( 저장된 이름, 기본값 )
+        // 저장된 이름이 존재하지 않을 시 기본값
+        String ID = loginData.getString("id", "null");
+        String name = loginData.getString("name", "null");
+        String key = loginData.getString("key", "null");
+        setHeadbarData(ID, name, key);
+    }
+
+
 }

@@ -25,7 +25,8 @@
         <activity android:name=".activity.CommunityActivity" />
         <activity android:name=".activity.SortActivity" />
         <activity android:name=".activity.MapActivity" />
-        <activity android:name=".activity.RecentlyViewedActivity"></activity>
+        <activity android:name=".activity.RecentlyViewedActivity" />
+        <activity android:name=".activity.SplashActivity"></activity>
     </application>
 
 </manifest>

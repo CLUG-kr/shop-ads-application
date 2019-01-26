@@ -9,6 +9,7 @@ import com.example.user.pyenhalean.CUSortActivityFragment;
 import com.example.user.pyenhalean.GS25SortActivityFragment;
 import com.example.user.pyenhalean.R;
 import com.example.user.pyenhalean.TabBarAdapter;
+import com.example.user.pyenhalean.TestSortActivityFragment;
 
 public class SortActivity extends BaseActivity {
     private ViewPager viewPager;
@@ -31,6 +32,7 @@ public class SortActivity extends BaseActivity {
         TabBarAdapter adapter = new TabBarAdapter(getSupportFragmentManager());
         adapter.addFrgament(new GS25SortActivityFragment(), "GS25");
         adapter.addFrgament(new CUSortActivityFragment(), "CU");
+        adapter.addFrgament(new TestSortActivityFragment(), "test");
         viewPager.setAdapter(adapter);
     }
 }
