@@ -234,6 +234,9 @@ def logout():
     if username in request.cookies:
         resp = make_response()
         resp.set_cookie(username, "null")
+        if username in loginData:
+            loginData[username] = None
+            loginType[username] = None
         return "<h1>logout</h1>"
     else :
         return "<h1>error_not_login</h1>"
