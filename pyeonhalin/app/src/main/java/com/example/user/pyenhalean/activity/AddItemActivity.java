@@ -34,7 +34,7 @@ public class AddItemActivity extends BaseActivity {
         setContentView(R.layout.activity_add_item);
         addToolbar();
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        price = (EditText) findViewById(R.id.itemPriceTV2);
+        price = (EditText) findViewById(R.id.itemPriceTV);
         name = (EditText)findViewById(R.id.itemNameTV);
         submitBtn=(Button)findViewById(R.id.submitButton);
 
