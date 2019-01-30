@@ -16,9 +16,15 @@ tools:openDrawer="start">
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="249dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="13dp"
         android:text="제출"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="305dp" />
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2" />
 
     <EditText
         android:id="@+id/itemNameTV"
