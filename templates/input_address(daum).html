@@ -8,7 +8,6 @@
     new daum.Postcode({
         oncomplete: function(data) {
             window.TestApp.setAddress(data.zonecode, data.jibunAddress, data.buildingName);
-
         }
     }).open();
 </script>

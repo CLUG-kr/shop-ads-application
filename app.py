@@ -8,6 +8,7 @@ import datetime
 import threading
 UPLOAD_FOLDER = "./database"
 storeManageDB = 'storeManage.db'
+addressManageDB = 'addressManage.db'
 userManageDB = 'userManage.db'
 testDataDB = "testData.db"
 app = Flask(__name__)
@@ -78,13 +79,16 @@ def signUp():
 
 @app.route("/ownerSignUp", methods=['GET'])
 def ownerSignUp_render():
-    return render_template('sign_up.html')
+    return render_template('owner_sign_up.html')
 @app.route("/ownerSignUp", methods=['POST'])
 def ownerSignUp():
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,userManageDB))
     curs = conn.cursor()
     username = request.form['id']
     password = request.form['pw']
+    address = request.form['address']
+    addressX = request.form['addressX']
+    addressY = request.form['addressY']
     dbPassword = hashlib.md5(password.encode()).hexdigest()
     curs.execute("SELECT * FROM userManage")
     Access = True
@@ -100,10 +104,16 @@ def ownerSignUp():
     curs.execute("insert into userManage values ('" + username + "', '" + dbPassword  + "', '" + 'owner'+"')")
     conn.commit()
     conn.close()
-
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, storeManageDB))
     curs = conn.cursor()
     curs.execute("CREATE TABLE  if not exists " + 'owner_'+username+"(itemName, itemPrice, event)")
+    conn.commit()
+    conn.close()
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, addressManageDB))
+    curs = conn.cursor()
+    address = address.replace(' ','_')
+    address += '_'
+    curs.execute("insert into "+address+" values ('" + username + "', '" + addressX + "', '" + addressY + "')")
     conn.commit()
     conn.close()
     data = "<h1>success<h1>"
@@ -200,7 +210,7 @@ def ownerItemUpload():
     username = request.form['id']
     itemName = request.form['itemName']
     itemPrice = request.form['itemPrice']
-    #itemEvent = request.form['event']
+    itemEvent = request.form['event']
     userKey = loginData[username]
     if username in request.cookies:
         cookieKey = request.cookies.get(username)
@@ -211,12 +221,96 @@ def ownerItemUpload():
         data = "<h1>wrong access<h1>"
     elif Access == True:
         if isOwner(username):
-            data = "<h1>testData</h1>"
-            curs.execute("insert into "+'owner_'+username+" values ('" + itemName + "', '" +itemPrice+ "', '" +"event"+"')")
+            curs.execute("SELECT  * FROM owner_" + username)
+            for i in curs.fetchall():
+                if i[0] == itemName:
+                    data = "<h1>fail</h1>"
+                    return data
+            data = "<h1>success</h1>"
+            curs.execute("insert into "+'owner_'+username+" values ('" + itemName + "', '" +itemPrice+ "', '" +itemEvent+"')")
             curs.execute("SELECT  * FROM owner_"+username)
             for i in curs.fetchall():
                 if i[0] == itemName:
-                    data = data + "<h1>" + str(i[1]) + str(i[2]) + "</h1>"
+                    data = data + "<h1>" + str(i[0]) + str(i[1])+ str(i[2]) + "</h1>"
+        else :
+            data = '<h1>isNotOwner'
+    conn.commit()
+    conn.close()
+    return data
+@app.route("/ownerItemDownload", methods=['GET'])
+def ownerItemDownload_render():
+    return render_template('owner_item_download.html')
+
+@app.route("/ownerItemDownload", methods=['POST','GET'])
+def ownerItemDownload():
+    global loginData
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,storeManageDB))
+    curs = conn.cursor()
+    username = request.form['id']
+    itemName = request.form['itemName']
+    itemPrice = request.form['itemPrice']
+    itemEvent = request.form['event']
+    userKey = loginData[username]
+    if username in request.cookies:
+        cookieKey = request.cookies.get(username)
+    else :
+        return "<h1>wrong access<h1>"
+    Access= userAuthenticate(userKey, cookieKey)
+    if Access == False:
+        data = "<h1>wrong access<h1>"
+    elif Access == True:
+        if isOwner(username):
+            curs.execute("SELECT  * FROM owner_" + username)
+            for i in curs.fetchall():
+                if i[0] == itemName:
+                    data = "<h1>fail</h1>"
+                    return data
+            data = "<h1>success</h1>"
+            curs.execute("insert into "+'owner_'+username+" values ('" + itemName + "', '" +itemPrice+ "', '" +itemEvent+"')")
+            curs.execute("SELECT  * FROM owner_"+username)
+            for i in curs.fetchall():
+                if i[0] == itemName:
+                    data = data + "<h1>" + str(i[0]) + str(i[1])+ str(i[2]) + "</h1>"
+        else :
+            data = '<h1>isNotOwner'
+    conn.commit()
+    conn.close()
+    return data
+
+@app.route("/ownerItemEdit", methods=['GET'])
+def ownerItemEdit_render():
+    return render_template('owner_item_upload.html')
+
+@app.route("/ownerItemEdit", methods=['POST','GET'])
+def ownerItemEdit():
+    global loginData
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,storeManageDB))
+    curs = conn.cursor()
+    username = request.form['id']
+    itemName = request.form['itemName']
+    itemPrice = request.form['itemPrice']
+    itemEvent = request.form['event']
+    userKey = loginData[username]
+    if username in request.cookies:
+        cookieKey = request.cookies.get(username)
+    else :
+        return "<h1>wrong access<h1>"
+    Access= userAuthenticate(userKey, cookieKey)
+    if Access == False:
+        data = "<h1>wrong access<h1>"
+    elif Access == True:
+        if isOwner(username):
+            curs.execute("SELECT  * FROM owner_" + username)
+            for i in curs.fetchall():
+                if i[0] == itemName:
+                    data = "<h1>fail</h1>"
+                    return data
+            data = "<h1>success</h1>"
+            curs.execute("insert into "+'owner_'+username+" values ('" + itemName + "', '" +itemPrice+ "', '" +itemEvent+"')")
+            curs.execute("SELECT  * FROM owner_"+username)
+            for i in curs.fetchall():
+                if i[0] == itemName:
+                    data = data + "<h1>" + str(i[0]) + str(i[1])+ str(i[2]) + "</h1>"
         else :
             data = '<h1>isNotOwner'
     conn.commit()
@@ -264,6 +358,12 @@ def DBinit():
        curs.execute("CREATE TABLE  if not exists testData(dataID,data1, data2)")
        conn.commit()
        conn.close()
+    if not os.path.isfile(os.path.join(UPLOAD_FOLDER, testDataDB)):
+        conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, testDataDB))
+        curs = conn.cursor()
+        curs.execute("CREATE TABLE  if not exists testData(dataID,data1, data2)")
+        conn.commit()
+        conn.close()
     if not os.path.isfile(os.path.join(UPLOAD_FOLDER, storeManageDB)):
         conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, testDataDB))
         curs = conn.cursor()
