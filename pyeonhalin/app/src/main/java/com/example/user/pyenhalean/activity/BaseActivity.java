@@ -74,7 +74,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         loginLoad();
         sApplication = this;
         if(nameTV.getText().toString().equals("owner")){
-            navigationView.getMenu().findItem(R.id.addItem).setVisible(true);
+            navigationView.getMenu().findItem(R.id.manageItem).setVisible(true);
         }
     }
 
@@ -106,7 +106,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.above_menu, menu);
-        item = menu.findItem(R.id.addItem);
+        item = menu.findItem(R.id.manageItem);
 
         return true;
     }
@@ -235,10 +235,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             case R.id.setting:
                 Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.addItem:
-                Intent addItemIntent = new Intent(BaseActivity.this, AddItemActivity.class);
-                addItemIntent.putExtra("prevActivity",getContextIndex(this));
-                startActivity(addItemIntent);
+            case R.id.manageItem:
+                Intent manageItemIntent = new Intent(BaseActivity.this, OwnerManageItemActivity.class);
+                manageItemIntent.putExtra("prevActivity",getContextIndex(this));
+                startActivity(manageItemIntent);
+                overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -318,7 +319,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             cookie = cookie1;
                             Toast.makeText(getContext(), "로그인 성공!", Toast.LENGTH_LONG).show();
                             if(type.equals("owner")){
-                                navigationView.getMenu().findItem(R.id.addItem).setVisible(true);
+                                navigationView.getMenu().findItem(R.id.manageItem).setVisible(true);
                             }
                         }
                         @Override
@@ -331,7 +332,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.logoutButton:
                     loginSave("null","null", "null", "false");
                     loginLoad();
-                    navigationView.getMenu().findItem(R.id.addItem).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.manageItem).setVisible(false);
                     break;
 
             }
