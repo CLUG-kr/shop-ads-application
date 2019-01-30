@@ -200,7 +200,7 @@ def ownerItemUpload():
     username = request.form['id']
     itemName = request.form['itemName']
     itemPrice = request.form['itemPrice']
-    itemEvent = request.form['event']
+    #itemEvent = request.form['event']
     userKey = loginData[username]
     if username in request.cookies:
         cookieKey = request.cookies.get(username)
