@@ -16,46 +16,52 @@ tools:openDrawer="start">
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:text="제출"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
+        app:layout_constraintTop_toTopOf="@+id/itemPriceTV" />
 
 
     <EditText
         android:id="@+id/itemNameTV"
-        android:layout_width="266dp"
-        android:layout_height="47dp"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="center"
         android:hint="제품명"
+        app:layout_constraintEnd_toStartOf="@+id/submitButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
 
     <EditText
         android:id="@+id/itemPriceTV"
-        android:layout_width="266dp"
-        android:layout_height="51dp"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="center"
         android:hint="제품가격"
+        app:layout_constraintEnd_toStartOf="@+id/submitButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNameTV" />
 
     <Spinner
         android:id="@+id/event_spinner"
-        android:layout_width="266dp"
-        android:layout_height="51dp"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/submitButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemPriceTV"
         android:entries="@array/event_name"/>
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout3"
@@ -75,7 +81,8 @@ tools:openDrawer="start">
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/navigation" >
+        app:menu="@menu/navigation"
+        android:visibility="gone">
 
     </android.support.design.widget.BottomNavigationView>
 </android.support.constraint.ConstraintLayout>

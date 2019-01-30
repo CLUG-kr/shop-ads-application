@@ -22,8 +22,8 @@
                 android:id="@+id/setting"
                 android:title="설정" />
             <item
-                android:id="@+id/addItem"
-                android:title="상품등록"
+                android:id="@+id/manageItem"
+                android:title="상품관리"
                 android:visible="false"/>
         </menu>
     </item>
