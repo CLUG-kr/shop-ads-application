@@ -8,4 +8,9 @@
         <item>증정품 증정</item>
         <item>가격할인</item>
     </string-array>
+    <string-array name="user_type">
+        <item>점주</item>
+        <item>이용자</item>
+
+    </string-array>
 </resources>

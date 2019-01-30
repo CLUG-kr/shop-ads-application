@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
@@ -22,12 +24,14 @@ public class SignUpDialog extends Dialog implements View.OnClickListener {
     private Button cancleButton;
     private Button registerButton;
 
+    private Spinner eventSpinner;
+
     private String ID;
     private String PW;
     private String address;
     private String addressX;
     private String addressY;
-
+    String eventName = "";
 
     public SignUpDialog(Context context) {
         super(context);
@@ -50,6 +54,18 @@ public class SignUpDialog extends Dialog implements View.OnClickListener {
         addressCallButton.setOnClickListener(this);
         cancleButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
+        eventSpinner = (Spinner)findViewById(R.id.userTypeSpinner);
+        eventSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                eventName = (String) parent.getItemAtPosition(position);
+
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     @Override
@@ -83,16 +99,31 @@ public class SignUpDialog extends Dialog implements View.OnClickListener {
                     ID = idEditText.getText().toString();
                     PW = pwEditText.getText().toString();
                     GetHTMLTask taskSignIn = new GetHTMLTask();
-                    taskResult = taskSignIn.execute("ownerSignUp", ID, PW, address,addressX,addressY).get();
-                    if (taskResult.equals("success")) {
-                        Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_LONG).show();
-                        this.dismiss();
-                        break;
+                    if(eventName.equals("점주")){
+                        taskResult = taskSignIn.execute("ownerSignUp", ID, PW, address,addressX,addressY).get();
+                        if (taskResult.equals("success ")) {
+                            Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_LONG).show();
+                            this.dismiss();
+                            break;
+                        }
+                        else {
+                            Toast.makeText(getContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            break;
+                        }
                     }
-                    else {
-                        Toast.makeText(getContext(), "로그인 실패", Toast.LENGTH_LONG).show();
-                        break;
+                    else if(eventName.equals("이용자")){
+                        taskResult = taskSignIn.execute("signUp", ID, PW).get();
+                        if (taskResult.equals("success ")) {
+                            Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_LONG).show();
+                            this.dismiss();
+                            break;
+                        }
+                        else {
+                            Toast.makeText(getContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            break;
+                        }
                     }
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

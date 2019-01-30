@@ -340,6 +340,4 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
 
     };
-
-
 }

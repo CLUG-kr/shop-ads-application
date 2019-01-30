@@ -70,6 +70,14 @@
             android:layout_weight="1"
             android:text="취소" />
 
+        <Spinner
+            android:id="@+id/userTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="분류"
+            android:entries="@array/user_type"/>
+
     </LinearLayout>
 
 </LinearLayout>
