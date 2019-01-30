@@ -106,7 +106,7 @@ def ownerSignUp():
     conn.close()
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, storeManageDB))
     curs = conn.cursor()
-    curs.execute("CREATE TABLE  if not exists " + 'owner_'+username+"(itemName, itemPrice, event)")
+    curs.execute("CREATE TABLE if not exists " + 'owner_'+username+"(itemName, itemPrice, event)")
     conn.commit()
     conn.close()
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, addressManageDB))
@@ -138,6 +138,7 @@ def ownerSignUp():
         if x[len(x)-1] == '리' or x[len(x)-1] == '동':
             break;
     print(addressS)
+    curs.execute("CREATE TABLE if not exists " + addressS + "(name,dataX, dataY)")
     curs.execute("insert into "+addressS+" values ('" + username + "', '" + addressX + "', '" + addressY + "')")
     conn.commit()
     conn.close()
