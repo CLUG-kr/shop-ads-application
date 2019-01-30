@@ -39,7 +39,7 @@
         <activity android:name=".activity.RecentlyViewedActivity" />
         <activity android:name=".activity.SplashActivity" />
         <activity android:name=".activity.AddItemActivity" />
-        <activity android:name=".activity.SignUpActivity"></activity>
+
     </application>
 
 </manifest>
