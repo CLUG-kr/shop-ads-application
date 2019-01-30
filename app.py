@@ -200,6 +200,7 @@ def ownerItemUpload():
     username = request.form['id']
     itemName = request.form['itemName']
     itemPrice = request.form['itemPrice']
+    itemEvent = request.form['event']
     userKey = loginData[username]
     if username in request.cookies:
         cookieKey = request.cookies.get(username)
@@ -285,6 +286,6 @@ if __name__ == '__main__':
     DBinit()
     returnDataCU = CC.updateCU()
     returnDataGS25 = CC.updateGS25()
-    t = threading.Thread(target=update_thread)
-    t.start()
+    #t = threading.Thread(target=update_thread)
+    #t.start()
     app.run(host = IP, port = 5010, debug=True)
