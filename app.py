@@ -112,26 +112,26 @@ def ownerSignUp():
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER, addressManageDB))
     curs = conn.cursor()
     address = address.split(" ")
-    if address in ['광주' , '대구', '인천', '부산', '울산', '대전']:
+    if address[0] in ['광주' , '대구', '인천', '부산', '울산', '대전']:
         address[0]+='광역시'
-    if address == '충북':
-        address = '충청북도'
-    if address == '충남':
-        address = '충청남도'
-    if address == '전남':
-        address = '전라남도'
-    if address == '전북':
-        address = '전라북도'
-    if address == '경남':
-        address = '경상남도'
-    if address == '경북':
-        address = '경상북도'
-    if address == '강원':
-        address = '강원도'
-    if address == '경기':
-        address = '경기도'
-    if address == '서울':
-        address = '서울특별시'
+    if address[0] == '충북':
+        address[0] = '충청북도'
+    if address[0] == '충남':
+        address[0] = '충청남도'
+    if address[0] == '전남':
+        address[0] = '전라남도'
+    if address[0] == '전북':
+        address[0] = '전라북도'
+    if address[0] == '경남':
+        address[0] = '경상남도'
+    if address[0] == '경북':
+        address[0] = '경상북도'
+    if address[0] == '강원':
+        address[0]= '강원도'
+    if address[0] == '경기':
+        address[0] = '경기도'
+    if address[0] == '서울':
+        address[0] = '서울특별시'
     addressS = ""
     for x in address :
         addressS += x+'_'
