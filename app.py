@@ -263,6 +263,7 @@ def ownerItemUpload():
     conn.commit()
     conn.close()
     return data
+
 @app.route("/ownerItemDownload", methods=['GET'])
 def ownerItemDownload_render():
     return render_template('owner_item_download.html')
@@ -349,6 +350,29 @@ def isOwner(ID):
     else :
         return False
 
+@app.route("/loadStore", methods=['GET'])
+def loadStore_render():
+    return render_template('load_store.html')
+
+@app.route("/loadStore", methods=['POST','GET'])
+def loadStore():
+    global loginData
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,addressManageDB))
+    curs = conn.cursor()
+    address = request.form['address']
+    curs.execute("select * from "+address+"")
+    data = ""
+    for i in curs.fetchall():
+        data += "<h1>"+i[0]+'!'+i[1]+'!'+i[2]+"</h1>"
+    conn.commit()
+    conn.close()
+    return data
+
+def isOwner(ID):
+    if loginType[ID] == 'owner':
+        return True
+    else :
+        return False
 @app.route("/logout", methods=['GET'])
 def logout_render():
     return render_template('logout.html')
