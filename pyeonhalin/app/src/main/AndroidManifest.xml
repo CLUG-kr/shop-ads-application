@@ -3,11 +3,13 @@
     package="com.example.user.pyenhalean">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--위치정보활용시 추가--><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!--WIFI 상태활용시 추가--><uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!--WIFI 상태활용시 추가--><uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 위치정보활용시 추가 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- WIFI 상태활용시 추가 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- WIFI 상태활용시 추가 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/client_name" />
@@ -37,7 +38,8 @@
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.RecentlyViewedActivity" />
         <activity android:name=".activity.SplashActivity" />
-        <activity android:name=".activity.AddItemActivity"></activity>
+        <activity android:name=".activity.AddItemActivity" />
+        <activity android:name=".activity.SignUpActivity"></activity>
     </application>
 
 </manifest>

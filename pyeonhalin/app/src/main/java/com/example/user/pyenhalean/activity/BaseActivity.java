@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.R;
-import com.example.user.pyenhalean.model.Headbar;
 import com.example.user.pyenhalean.*;
 
 import java.util.concurrent.ExecutionException;
