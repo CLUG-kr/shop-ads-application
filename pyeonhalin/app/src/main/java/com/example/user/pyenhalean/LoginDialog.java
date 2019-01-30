@@ -30,6 +30,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
     private String PW;
     private String cookie;
     private String key;
+    private String type;
 
     public LoginDialog(Context context) {
         super(context);
@@ -68,7 +69,8 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
                     if (taskResult.length == 4) {
                         cookie = taskResult[3];
                         key = taskResult[1];
-                        LoginDialogListener.onPositiveClicked(ID, PW, key, cookie);
+                        type = taskResult[2];
+                        LoginDialogListener.onPositiveClicked(ID, PW, key, cookie, type);
                         this.dismiss();
                         break;
                     }

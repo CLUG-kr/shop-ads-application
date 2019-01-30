@@ -1,7 +1,6 @@
 package com.example.user.pyenhalean.activity;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,17 +13,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.pyenhalean.GetHTMLTask;
-import com.example.user.pyenhalean.HeadbarSharePreferences;
 import com.example.user.pyenhalean.R;
 import com.example.user.pyenhalean.model.Headbar;
 import com.example.user.pyenhalean.*;
@@ -46,7 +42,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout dlDrawer;
     NavigationView navigationView;
     View headView;
-    Headbar headbar;
     TextView nameTV;
     TextView idTV;
     TextView keyTV;
@@ -56,8 +51,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences loginData;
 
     String cookie;
-
-
+    MenuItem item;
 
 
     public Context getContext() {
@@ -80,6 +74,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         loginData = getSharedPreferences("loginData", MODE_PRIVATE);
         loginLoad();
         sApplication = this;
+        if(nameTV.getText().toString().equals("owner")){
+            navigationView.getMenu().findItem(R.id.addItem).setVisible(true);
+        }
     }
 
     private void headLinkViewID() {
@@ -110,6 +107,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.above_menu, menu);
+        item = menu.findItem(R.id.addItem);
+
         return true;
     }
     @Override
@@ -230,12 +229,17 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "첫번째", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.recent_market:
-                Intent intent = new Intent(BaseActivity.this, RecentlyViewedActivity.class);
-                intent.putExtra("prevActivity",getContextIndex(this));
-                startActivity(intent);
+                Intent resentMarketIntent = new Intent(BaseActivity.this, RecentlyViewedActivity.class);
+                resentMarketIntent.putExtra("prevActivity",getContextIndex(this));
+                startActivity(resentMarketIntent);
                 break;
             case R.id.setting:
                 Toast.makeText(this, "두번째", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.addItem:
+                Intent addItemIntent = new Intent(BaseActivity.this, AddItemActivity.class);
+                addItemIntent.putExtra("prevActivity",getContextIndex(this));
+                startActivity(addItemIntent);
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -309,11 +313,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     LoginDialog myLoginDialog = new LoginDialog(sApplication);
                     myLoginDialog.setLoginDialogListener(new LoginDialogListener(){
                         @Override
-                        public void onPositiveClicked(String id, String pw, String key, String cookie1) {
-                            loginSave(id,"name", key, "true");
+                        public void onPositiveClicked(String id, String pw, String key, String cookie1, String type) {
+                            loginSave(id,type, key, "true");
                             loginLoad();
                             cookie = cookie1;
                             Toast.makeText(getContext(), "로그인 성공!", Toast.LENGTH_LONG).show();
+                            if(type.equals("owner")){
+                                navigationView.getMenu().findItem(R.id.addItem).setVisible(true);
+                            }
                         }
                         @Override
                         public void onNegativeClicked() {
@@ -325,6 +332,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.logoutButton:
                     loginSave("null","null", "null", "false");
                     loginLoad();
+                    navigationView.getMenu().findItem(R.id.addItem).setVisible(false);
                     break;
 
             }
