@@ -16,43 +16,60 @@ tools:openDrawer="start">
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="249dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="8dp"
         android:text="제출"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
+
 
     <EditText
         android:id="@+id/itemNameTV"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="186dp"
+        android:layout_width="266dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="물건이름"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="제품명"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
 
     <EditText
         android:id="@+id/itemPriceTV2"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="216dp"
+        android:layout_width="266dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="물건 가격"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="제품가격"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/itemNameTV" />
+
+    <EditText
+        android:id="@+id/itemPriceTV"
+        android:layout_width="266dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="제품가격"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemNameTV" />
+
+    <Spinner
+        android:id="@+id/spinner_event"
+        android:layout_width="266dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="제품가격"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout3"
