@@ -84,7 +84,7 @@ public class SignUpDialog extends Dialog implements View.OnClickListener {
                     PW = pwEditText.getText().toString();
                     GetHTMLTask taskSignIn = new GetHTMLTask();
                     taskResult = taskSignIn.execute("ownerSignUp", ID, PW, address,addressX,addressY).get();
-                    if (taskResult.equals("success")) {
+                    if (taskResult.equals("success ")) {
                         Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_LONG).show();
                         this.dismiss();
                         break;

@@ -83,10 +83,7 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.submit:
-                if(!address.equals("")){
-                    callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
-                    this.dismiss();
-                }
+
         }
 
     }
@@ -105,6 +102,10 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
                         addressY = String.valueOf(location.get(0).getLongitude());
                         Log.d("addressX",addressX);
                         Log.d("addressY",addressY);
+                        if(!address.equals("")){
+                            callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
+                            dismiss();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
