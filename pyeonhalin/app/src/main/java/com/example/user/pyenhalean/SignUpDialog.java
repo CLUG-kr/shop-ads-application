@@ -63,6 +63,7 @@ public class SignUpDialog extends Dialog implements View.OnClickListener {
                         address = _address;
                         addressX = _addressX;
                         addressY = _addressY;
+                        addressEditText.setText(address);
                     }
 
                     @Override

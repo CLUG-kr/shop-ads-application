@@ -58,7 +58,7 @@ public class EventActivity extends BaseActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    result.setText(String.format("(%s",arg1 ));
+                    result.setText(String.format("%s",arg1 ));
                     // WebView를 초기화 하지않으면 재사용할 수 없음
                     init_webView();
                 }

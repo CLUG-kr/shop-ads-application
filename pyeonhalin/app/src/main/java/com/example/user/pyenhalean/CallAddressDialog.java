@@ -30,7 +30,7 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     String[] taskResult;
     private Context context;
 
-    private String address;
+    private String address = "";
     private String addressX;
     private String addressY;
     private WebView webView;
@@ -58,7 +58,7 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
 
         // 핸들러를 통한 JavaScript 이벤트 반응
         handler = new Handler();
-
+        submitButton.setOnClickListener(this);
 
     }
 
@@ -83,7 +83,11 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.submit:
-                callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
+                if(!address.equals("")){
+                    callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
+                    this.dismiss();
+                }
+
                 break;
         }
 
