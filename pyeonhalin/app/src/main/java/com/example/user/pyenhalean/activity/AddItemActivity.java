@@ -61,7 +61,7 @@ public class AddItemActivity extends BaseActivity {
                 switch (view.getId()){
                     case R.id.submitButton:
                         GetHTMLTask task = new GetHTMLTask();
-                        task.execute("ownerItemUpload",idTV.getText().toString(),keyTV.getText().toString() ,name.getText().toString(), price.getText().toString(),"event");
+                        task.execute("ownerItemUpload",idTV.getText().toString(),keyTV.getText().toString() ,name.getText().toString(), price.getText().toString(),eventName);
                 }
             }
         };

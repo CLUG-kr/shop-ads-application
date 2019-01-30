@@ -54,7 +54,7 @@ tools:openDrawer="start">
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2"
+        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV"
         android:entries="@array/event_name"/>
 
     <android.support.design.widget.AppBarLayout

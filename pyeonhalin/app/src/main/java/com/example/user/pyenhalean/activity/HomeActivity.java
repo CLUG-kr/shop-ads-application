@@ -33,8 +33,6 @@ public class HomeActivity extends BaseActivity {
         testBtn_3 = findViewById(R.id.test_btn_3);
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        GetHTMLTask taskTestData = new GetHTMLTask();
-        taskTestData.execute("testData",ID,keyTV.getText().toString());
 
         configBottomNavigation(HomeActivity.this,navigation);
         Button.OnClickListener onClickListener = new Button.OnClickListener(){

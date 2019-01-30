@@ -280,6 +280,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             editor.putString("name", name);
             editor.putString("key",key);
             editor.putString("loginOK", loginOK);
+
         }
 
 

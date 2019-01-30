@@ -54,11 +54,11 @@ public class EventActivity extends BaseActivity {
 
     private class AndroidBridge {
         @JavascriptInterface
-        public void setAddress(final String arg1, final String arg2, final String arg3) {
+        public void setAddress(final String arg1) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    result.setText(String.format("(%s) %s %s", arg1, arg2, arg3));
+                    result.setText(String.format("(%s",arg1 ));
                     // WebView를 초기화 하지않으면 재사용할 수 없음
                     init_webView();
                 }
