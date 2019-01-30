@@ -60,16 +60,14 @@ tools:openDrawer="start">
         app:layout_constraintTop_toBottomOf="@+id/itemNameTV" />
 
     <Spinner
-        android:id="@+id/spinner_event"
+        android:id="@+id/event_spinner"
         android:layout_width="266dp"
         android:layout_height="51dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="제품가격"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2" />
+        app:layout_constraintTop_toBottomOf="@+id/itemPriceTV2"
+        android:entries="@array/event_name"/>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout3"
