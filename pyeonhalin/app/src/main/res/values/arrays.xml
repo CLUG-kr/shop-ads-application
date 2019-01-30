@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="event_name">
+        <item>1+1행사</item>
+        <item>2+1행사</item>
+        <item>3+1행사</item>
+        <item>증정품 증정</item>
+    </string-array>
+</resources>
