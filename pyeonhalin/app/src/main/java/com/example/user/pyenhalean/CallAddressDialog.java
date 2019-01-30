@@ -106,7 +106,6 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
                             callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
                             dismiss();
                         }
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
