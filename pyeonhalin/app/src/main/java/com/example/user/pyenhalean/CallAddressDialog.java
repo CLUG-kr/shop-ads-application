@@ -83,11 +83,16 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.submit:
+<<<<<<< Updated upstream
                 if(!address.equals("")){
                     callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
                     this.dismiss();
                 }
 
+=======
+                callAddressDialogListener.onPositiveClicked(address, addressX, addressY);
+                this.dismiss();
+>>>>>>> Stashed changes
                 break;
         }
 
