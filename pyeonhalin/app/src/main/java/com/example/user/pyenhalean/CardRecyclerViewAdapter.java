@@ -1,5 +1,6 @@
 package com.example.user.pyenhalean;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -8,9 +9,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<CardViewItemDTO> cardViewItemDTOs = new ArrayList<>();
     Context context;
+    OwnerManageItemActivity activity;
     public CardRecyclerViewAdapter(CardViewItemDTO[] cardViewItemDTO) {
         for(int i = 0; i < cardViewItemDTO.length; i++){
             cardViewItemDTOs.add(cardViewItemDTO[i]);
@@ -35,7 +40,9 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             cardViewItemDTOs.add(cardViewItemDTO[i]);
         }
         this.context = context;
+        activity = (OwnerManageItemActivity)context;
     }
+
 
     @NonNull
     @Override
@@ -46,7 +53,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
         ((RowCell)viewHolder).imageView.setImageResource(cardViewItemDTOs.get(position).imageView);
         ((RowCell)viewHolder).title.setText(cardViewItemDTOs.get(position).title);
         ((RowCell)viewHolder).subtitle.setText(cardViewItemDTOs.get(position).subtitle);
@@ -55,7 +62,32 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 if(context instanceof OwnerManageItemActivity){
-                    Log.d("관리자","관리자");
+                    PopupMenu popupMenu = new PopupMenu(context,view);
+                    MenuInflater inflater = new MenuInflater(context);
+                    inflater.inflate(R.menu.edit_menu, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.edit:
+                                    Toast.makeText(context,"메뉴1",Toast.LENGTH_SHORT).show();
+                                    break;
+                                case R.id.delete:
+                                    if(!cardViewItemDTOs.get(position).price.equals("")){
+                                        GetHTMLTask task = new GetHTMLTask();
+                                        task.execute("ownerItemDelete",((OwnerManageItemActivity)context).idTV.getText().toString(),cardViewItemDTOs.get(position).title);
+                                        Intent intent = ((OwnerManageItemActivity) context).getIntent();
+                                        context.startActivity(intent);
+                                        activity.finish();
+                                        break;
+                                    }
+
+                            }
+                            return false;
+                        }
+                    });
+
+                    popupMenu.show();//Popup Menu 보이기
                 }
                 else {
                     Log.d("실패","실패");

@@ -98,6 +98,11 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
                     returnString += element.get(i).text()+"#";
                 }
             }
+            else if(parm[0].equals("ownerItemDelete")){
+                doc = Jsoup.connect(sUrl+parm[0]).data("id",parm[1]).data("itemName",parm[2]).post();
+                element = doc.select("h1");
+                returnString = element.text();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

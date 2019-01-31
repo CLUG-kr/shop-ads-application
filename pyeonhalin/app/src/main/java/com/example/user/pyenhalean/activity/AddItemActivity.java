@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.R;
 
@@ -52,6 +54,9 @@ public class AddItemActivity extends BaseActivity {
                     case R.id.submitButton:
                         GetHTMLTask task = new GetHTMLTask();
                         task.execute("ownerItemUpload",idTV.getText().toString(),keyTV.getText().toString() ,name.getText().toString(), price.getText().toString(),eventName);
+                        Toast.makeText(getContext(),"등록완료!",Toast.LENGTH_LONG).show();
+                        name.setText("");
+                        price.setText("");
                 }
             }
         };
@@ -65,5 +70,14 @@ public class AddItemActivity extends BaseActivity {
         super.onStart();
         Intent intent = getIntent();
         updateBottomMenu(intent.getIntExtra("prevActivity",1),navigation);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, OwnerManageItemActivity.class);
+
+        startActivity(intent);
+        finish();
+
     }
 }

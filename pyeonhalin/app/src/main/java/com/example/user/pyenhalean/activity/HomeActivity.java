@@ -1,14 +1,21 @@
 package com.example.user.pyenhalean.activity;
 
+import android.Manifest;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.R;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends BaseActivity {
@@ -27,6 +34,25 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         addToolbar();
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(getContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(getContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .check();
+
 
         testBtn_1 = findViewById(R.id.test_btn_1);
         testBtn_2 = findViewById(R.id.test_btn_2);
@@ -79,6 +105,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        /*
         if(cookie != null && ID != null) {
             try {
                 GetHTMLTask taskLogout = new GetHTMLTask();
@@ -90,6 +117,7 @@ public class HomeActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+        */
     }
 
 }

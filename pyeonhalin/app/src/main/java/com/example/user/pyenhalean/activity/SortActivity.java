@@ -32,7 +32,7 @@ public class SortActivity extends BaseActivity {
         TabBarAdapter adapter = new TabBarAdapter(getSupportFragmentManager());
         adapter.addFrgament(new GS25SortActivityFragment(), "GS25");
         adapter.addFrgament(new CUSortActivityFragment(), "CU");
-        adapter.addFrgament(new TestSortActivityFragment(), "test");
+       // adapter.addFrgament(new TestSortActivityFragment(), "test");
         viewPager.setAdapter(adapter);
     }
 }

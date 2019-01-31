@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     View headView;
     TextView nameTV;
-    TextView idTV;
+    public TextView idTV;
     TextView keyTV;
     TextView loginOKTV;
     Button loginButton;
@@ -135,6 +135,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             intent = new Intent(context, MapActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                         }
                         return true;
@@ -143,6 +144,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             intent = new Intent(context, SortActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                         }
                         return true;
@@ -151,6 +153,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             intent = new Intent(context, HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                         }
                         return true;
@@ -160,6 +163,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             intent = new Intent(context, EventActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                         }
                         return true;
@@ -169,6 +173,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             intent = new Intent(context, CommunityActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                         }
                         return true;
@@ -340,4 +345,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
 
     };
+
+
 }

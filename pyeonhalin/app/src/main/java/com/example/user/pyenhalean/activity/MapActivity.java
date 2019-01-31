@@ -1,10 +1,8 @@
 package com.example.user.pyenhalean.activity;
 
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.R;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
@@ -38,11 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import java.io.IOException;
-import java.util.List;
-
 
 public class MapActivity extends BaseActivity implements OnMapReadyCallback {
+
+
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
@@ -117,10 +112,78 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         latitude = user_latitude = location.getLatitude();
         longitude = user_longitude = location.getLongitude();
 
+        locationName = setMarker(user_latitude,user_longitude,naverMap);
+
+        // set map camera location
+        // change latitude to user_latitude longitude to user_longitude after test and change 117 line
+        cameraUpdate = CameraUpdate.scrollTo(new LatLng(user_latitude, user_longitude));
+        locationOverlay.setPosition(new LatLng(user_latitude, user_longitude));
+        naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+        naverMap.moveCamera(cameraUpdate);
+        final String finalLocationName = locationName;
+
+        NaverMap.OnCameraChangeListener listener = new NaverMap.OnCameraChangeListener() {
+            String locationName = finalLocationName;
+            double latitude;
+            double longitude;
+
+            @Override
+            public void onCameraChange(final int reason, final boolean animated) {
+                long now = System.currentTimeMillis();
+                Thread thread = new Thread(){
+                    List<Address> list = null;
+                    String nLocationName = null;
+                    String[] tempString;
+                  @Override
+                    public void run(){
+                      latitude = naverMap.getCameraPosition().target.latitude;
+                      longitude = naverMap.getCameraPosition().target.longitude;
+                      try {
+                          list = geocoder.getFromLocation(latitude, longitude, 10);
+                          tempString= list.get(0).getAddressLine(0).split(" ");
+                          nLocationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
+                          if(!locationName.equals(nLocationName)){
+                              locationName = nLocationName;
+                              setMarker(latitude,longitude,naverMap);
+                              Log.d("naver","setMarker");
+                          }
+                      } catch (IOException e) {
+                          e.printStackTrace();
+                      }
+
+                      Log.d("NaverMap", "카메라 변경 - reson: " + reason + ", animated: " + animated);
+//                      Log.d("NaverMap", nLocationName);
+                  }
+                };
+                if(now % 35 == 1){
+                    thread.start();
+                }
+
+            }
+        };
+        naverMap.addOnCameraChangeListener(listener);
+
+    }
+
+    private String setMarker(double user_latitude, double user_longitude, NaverMap naverMap) {
+        String[] response = null;
+
+        //variable for get user location and store location
+        double latitude;
+        double longitude;
+        String storeName;
+        final Geocoder geocoder = new Geocoder(this);
+        String locationName = null;
+        List<Address> list = null;
+        Location location;
+        LocationManager manager;
+
+        //variable for map overlay
+        LocationOverlay locationOverlay;
+        CameraUpdate cameraUpdate;
         try {
             //get current location
             list = geocoder.getFromLocation(user_latitude, user_longitude, 10);
-            locationName = getAddress(list);
 
             if(list.get(0).getAddressLine(0) == null){
                 GetHTMLTask tesk = new GetHTMLTask();
@@ -147,6 +210,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         }
 
         // set marker
+        if (response == null){
+            return "null";
+        }
         for(int i = 0; i < response.length; i++){
             Marker marker = new Marker();
             if(response[i].split("!").length >= 3){
@@ -173,261 +239,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
             }
 
         }
-
-        // set map camera location
-        // change latitude to user_latitude longitude to user_longitude after test and change 117 line
-        cameraUpdate = CameraUpdate.scrollTo(new LatLng(latitude, longitude));
-        locationOverlay.setPosition(new LatLng(user_latitude, user_longitude));
-        naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
-        naverMap.moveCamera(cameraUpdate);
-        final String finalLocationName = locationName;
-        /*
-        NaverMap.OnCameraChangeListener listener = new NaverMap.OnCameraChangeListener() {
-            String locationName = finalLocationName;
-            double latitude;
-            double longitude;
-            @Override
-            public void onCameraChange(final int reason, final boolean animated) {
-
-                Thread thread = new Thread(){
-                    List<Address> list = null;
-                    String nLocationName = null;
-                    String[] tempString;
-                  @Override
-                    public void run(){
-                      latitude = naverMap.getCameraPosition().target.latitude;
-                      longitude = naverMap.getCameraPosition().target.longitude;
-                      try {
-                          list = geocoder.getFromLocation(latitude, longitude, 10);
-                          tempString= list.get(0).getAddressLine(0).split(" ");
-                          nLocationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
-                          if(!locationName.equals(nLocationName)){
-                              locationName = nLocationName;
-                              setMarker(latitude,longitude,naverMap);
-                              Log.d("naver","setMarker");
-                          }
-                      } catch (IOException e) {
-                          e.printStackTrace();
-                      }
-
-                      Log.d("NaverMap", "카메라 변경 - reson: " + reason + ", animated: " + animated);
-                      Log.d("NaverMap", nLocationName);
-                  }
-                };
-                thread.start();
-            }
-        };
-        naverMap.addOnCameraChangeListener(listener);
-        */
-    }
-    /*
-    public void onMapReady(@NonNull final NaverMap naverMap) {
-        naverMap.setLocationSource(locationSource);
-
-        String[] response = null;
-
-        //variable for get user location and store location
-        double user_latitude;
-        double user_longitude;
-        double latitude;
-        double longitude;
-        String storeName;
-        final Geocoder geocoder = new Geocoder(this);
-        String locationName = null;
-        List<Address> list = null;
-        Location location;
-        LocationManager manager;
-
-        //variable for map overlay
-        LocationOverlay locationOverlay;
-        CameraUpdate cameraUpdate;
-
-        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        if ((location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)) == null
-                && (location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)) == null) {
-
-            Toast.makeText(MapActivity.this,
-                    "위치정보가 잡히지 않습니다.\n 잠시후 다시 시도해주세요", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        locationOverlay = naverMap.getLocationOverlay();
-        locationOverlay.setVisible(true);
-
-        latitude = user_latitude = location.getLatitude();
-        longitude = user_longitude = location.getLongitude();
-
-        try {
-            //get current location
-            list = geocoder.getFromLocation(user_latitude, user_longitude, 10);
-            locationName = getAddress(list);
-
-            if(list.get(0).getAddressLine(0) == null){
-                GetHTMLTask tesk = new GetHTMLTask();
-                Log.d("address",list.get(0).toString());
-
-                locationName = "서울특별시_강남구_대치동_"; //set string to test response
-
-                response = tesk.execute("loadStore", locationName).get().split("#");
-                Log.d("위치", locationName);
-            }
-            else {
-                GetHTMLTask tesk = new GetHTMLTask();
-                String[] tempString = list.get(0).getAddressLine(0).split(" ");
-                locationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
-                response = tesk.execute("loadStore", locationName).get().split("#");
-                Log.d("위치", locationName);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("reponse.length",String.valueOf(response.length));
-        Log.d("reponse", String.valueOf(response[0]));
-        // set marker
-        for (String aResponse : response) {
-            if (aResponse.split("i").length >= 3) {
-                Marker marker = new Marker();
-                storeName = aResponse.split("!")[0];
-                latitude = Double.parseDouble(aResponse.split("!")[1]);
-                longitude = Double.parseDouble(aResponse.split("!")[2]);
-
-                marker.setPosition(new LatLng(latitude, longitude));
-                marker.setCaptionText(storeName);
-                marker.setCaptionAlign(Align.Top);
-                marker.setTag(storeName);
-
-                //주의!!! 마커가 많을 경우 Out Of Memory 오류
-                // Dialog test 후 수정
-                marker.setOnClickListener(new Overlay.OnClickListener() {
-                    @Override
-                    public boolean onClick(@NonNull Overlay overlay) {
-                        showItem((String) overlay.getTag());
-                        return true;
-                    }
-                });
-
-                marker.setMap(naverMap);
-            }
-        }
-
-        // set map camera location
-        // change latitude to user_latitude longitude to user_longitude after test and change 117 line
-        cameraUpdate = CameraUpdate.scrollTo(new LatLng(latitude, longitude));
-        locationOverlay.setPosition(new LatLng(user_latitude, user_longitude));
-        naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
-        naverMap.moveCamera(cameraUpdate);
-        final String finalLocationName = locationName;
-        NaverMap.OnCameraChangeListener listner = new NaverMap.OnCameraChangeListener() {
-            String locationName = finalLocationName;
-            double latitude;
-            double longitude;
-            @Override
-            public void onCameraChange(int reason, boolean animated) {
-                latitude = naverMap.getCameraPosition().target.latitude;
-                longitude = naverMap.getCameraPosition().target.longitude;
-                String nLocationName = null;
-
-                List<Address> list = null;
-                try {
-                    list = geocoder.getFromLocation(latitude, longitude, 10);
-                    String[] tempString = list.get(0).getAddressLine(0).split(" ");
-                    nLocationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
-                    if(!locationName.equals(nLocationName)){
-                        locationName = nLocationName;
-                  //      setMarker(latitude,longitude,naverMap);
-                        Log.d("naver","setMarker");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("NaverMap", "카메라 변경 - reson: " + reason + ", animated: " + animated);
-                Log.d("NaverMap", nLocationName);
-            }
-        };
-        naverMap.addOnCameraChangeListener(listner);
-
-    }
-*/
-    public String getAddress(List<Address> list) throws IOException {
-        return list.get(0).getLocality() + "_" + list.get(0).getSubLocality() + "_"
-                + list.get(0).getThoroughfare() + "_";
-
+        return locationName;
     }
 
 
-    public void setMarker(double x, double y, NaverMap naverMap){
-        double latitude;
-        double longitude;
-        String storeName;
-        final Geocoder geocoder = new Geocoder(this);
-        List<Address> list = null;
-        Location location;
-        LocationManager manager;
-        String locationName;
-        String[] response = null;
-        try {
-            //get current location
-            list = geocoder.getFromLocation(x, y, 10);
-            locationName = getAddress(list);
 
-            if(list.get(0).getAddressLine(0) == null){
-                GetHTMLTask tesk = new GetHTMLTask();
-                Log.d("address",list.get(0).toString());
-
-                locationName = "서울특별시_강남구_대치동_"; //set string to test response
-
-                response = tesk.execute("loadStore", locationName).get().split("#");
-                Log.d("위치", locationName);
-            }
-            else {
-                GetHTMLTask tesk = new GetHTMLTask();
-                String[] tempString = list.get(0).getAddressLine(0).split(" ");
-                locationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
-                response = tesk.execute("loadStore", locationName).get().split("#");
-                Log.d("위치", locationName);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("reponse.length",String.valueOf(response.length));
-        Log.d("reponse", String.valueOf(response[0]));
-        // set marker
-        for(int i = 0; i < response.length; i++){
-            if(response[i].split("i").length >= 3) {
-                Marker marker = new Marker();
-                storeName = response[i].split("!")[0];
-                latitude = Double.parseDouble(response[i].split("!")[1]);
-                longitude = Double.parseDouble(response[i].split("!")[2]);
-
-                marker.setPosition(new LatLng(latitude, longitude));
-                marker.setCaptionText(storeName);
-                marker.setCaptionAlign(Align.Top);
-                marker.setTag(storeName);
-
-                //주의!!! 마커가 많을 경우 Out Of Memory 오류
-                // Dialog test 후 수정
-                marker.setOnClickListener(new Overlay.OnClickListener() {
-                    @Override
-                    public boolean onClick(@NonNull Overlay overlay) {
-                        showItem((String) overlay.getTag());
-                        return true;
-                    }
-                });
-                marker.setMap(naverMap);
-            }
-        }
-
-    }
 
     public void showItem(String storename)
     {
@@ -460,3 +276,4 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
 }
+
