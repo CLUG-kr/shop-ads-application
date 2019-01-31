@@ -281,6 +281,24 @@ def ownerItemDownload():
     conn.close()
     return data
 
+@app.route("/ownerItemDelete", methods=['GET'])
+def ownerItemDelete_render():
+    return render_template('owner_item_delete.html')
+
+@app.route("/ownerItemDelete", methods=['POST','GET'])
+def ownerItemDelete():
+    data = ""
+    conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,storeManageDB))
+    curs = conn.cursor()
+    username = request.form['id']
+    itemName = request.form['itemName']
+
+    curs.execute("delete from owner_"+username+" where itemName="+" '"+itemName+"'")
+    conn.commit()
+    conn.close()
+    return data
+
+
 @app.route("/ownerItemEdit", methods=['GET'])
 def ownerItemEdit_render():
     return render_template('owner_item_upload.html')
