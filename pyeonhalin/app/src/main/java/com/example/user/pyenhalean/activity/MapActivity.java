@@ -149,26 +149,29 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         // set marker
         for(int i = 0; i < response.length; i++){
             Marker marker = new Marker();
-            storeName = response[i].split("!")[0];
-            latitude = Double.parseDouble(response[i].split("!")[1]);
-            longitude = Double.parseDouble(response[i].split("!")[2]);
+            if(response[i].split("!").length >= 3){
+                storeName = response[i].split("!")[0];
+                latitude = Double.parseDouble(response[i].split("!")[1]);
+                longitude = Double.parseDouble(response[i].split("!")[2]);
 
-            marker.setPosition(new LatLng(latitude, longitude));
-            marker.setCaptionText(storeName);
-            marker.setCaptionAlign(Align.Top);
-            marker.setTag(storeName);
+                marker.setPosition(new LatLng(latitude, longitude));
+                marker.setCaptionText(storeName);
+                marker.setCaptionAlign(Align.Top);
+                marker.setTag(storeName);
 
-            //주의!!! 마커가 많을 경우 Out Of Memory 오류
-            // Dialog test 후 수정
-            marker.setOnClickListener(new Overlay.OnClickListener(){
-                @Override
-                public boolean onClick(@NonNull Overlay overlay) {
-                    showItem((String)overlay.getTag());
-                    return true;
-                }
-            });
+                //주의!!! 마커가 많을 경우 Out Of Memory 오류
+                // Dialog test 후 수정
+                marker.setOnClickListener(new Overlay.OnClickListener(){
+                    @Override
+                    public boolean onClick(@NonNull Overlay overlay) {
+                        showItem((String)overlay.getTag());
+                        return true;
+                    }
+                });
 
-            marker.setMap(naverMap);
+                marker.setMap(naverMap);
+            }
+
         }
 
         // set map camera location
@@ -178,45 +181,44 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
         naverMap.moveCamera(cameraUpdate);
         final String finalLocationName = locationName;
+        /*
         NaverMap.OnCameraChangeListener listener = new NaverMap.OnCameraChangeListener() {
             String locationName = finalLocationName;
             double latitude;
             double longitude;
             @Override
-            public void onCameraChange(int reason, boolean animated) {
-                latitude = naverMap.getCameraPosition().target.latitude;
-                longitude = naverMap.getCameraPosition().target.longitude;
-                String nLocationName = null;
+            public void onCameraChange(final int reason, final boolean animated) {
 
-                List<Address> list = null;
-                try {
-                    list = geocoder.getFromLocation(latitude, longitude, 10);
-                    String[] tempString = list.get(0).getAddressLine(0).split(" ");
-                    nLocationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
-                    if(!locationName.equals(nLocationName)){
-                        locationName = nLocationName;
-                        Thread thread = new Thread(){
-                            @Override
-                            public void run(){
-                                Marker marker = new Marker();
-                                marker.setPosition(new LatLng(latitude, longitude));
-                                marker.setCaptionText("a");
-                                marker.setCaptionAlign(Align.Top);
-                                marker.setTag("a");
-                            }
-                        };
-                        thread.run();
-                        Log.d("naver","setMarker");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Thread thread = new Thread(){
+                    List<Address> list = null;
+                    String nLocationName = null;
+                    String[] tempString;
+                  @Override
+                    public void run(){
+                      latitude = naverMap.getCameraPosition().target.latitude;
+                      longitude = naverMap.getCameraPosition().target.longitude;
+                      try {
+                          list = geocoder.getFromLocation(latitude, longitude, 10);
+                          tempString= list.get(0).getAddressLine(0).split(" ");
+                          nLocationName = tempString[1] + "_" + tempString[2] + "_" + tempString[3] + "_";
+                          if(!locationName.equals(nLocationName)){
+                              locationName = nLocationName;
+                              setMarker(latitude,longitude,naverMap);
+                              Log.d("naver","setMarker");
+                          }
+                      } catch (IOException e) {
+                          e.printStackTrace();
+                      }
 
-                Log.d("NaverMap", "카메라 변경 - reson: " + reason + ", animated: " + animated);
-                Log.d("NaverMap", nLocationName);
+                      Log.d("NaverMap", "카메라 변경 - reson: " + reason + ", animated: " + animated);
+                      Log.d("NaverMap", nLocationName);
+                  }
+                };
+                thread.start();
             }
         };
         naverMap.addOnCameraChangeListener(listener);
+        */
     }
     /*
     public void onMapReady(@NonNull final NaverMap naverMap) {
@@ -357,7 +359,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                 + list.get(0).getThoroughfare() + "_";
 
     }
-    /*
+
 
     public void setMarker(double x, double y, NaverMap naverMap){
         double latitude;
@@ -426,7 +428,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         }
 
     }
-*/
+
     public void showItem(String storename)
     {
         final List<String> ListItems = new ArrayList<>();
