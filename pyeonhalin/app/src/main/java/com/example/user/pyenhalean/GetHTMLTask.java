@@ -87,7 +87,16 @@ public class GetHTMLTask extends AsyncTask<String, Void, String> {
             else if(parm[0].equals("loadStore")){
                 doc = Jsoup.connect(sUrl+parm[0]).data("address",parm[1]).post();
                 element = doc.select("h1");
-                returnString = element.text();
+                for(int i = 0; i < element.size();i++){
+                    returnString += element.get(i).text()+"#";
+                }
+            }
+            else if(parm[0].equals("ownerItemDownload")){
+                doc = Jsoup.connect(sUrl+parm[0]).data("id",parm[1]).post();
+                element = doc.select("h1");
+                for(int i = 0; i < element.size();i++){
+                    returnString += element.get(i).text()+"#";
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -36,9 +36,6 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     private WebView webView;
     private Handler handler;
 
-    Button submitButton;
-
-
     public CallAddressDialog(Context context) {
         super(context);
         this.context = context;
@@ -52,13 +49,13 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_call_address);
-        submitButton = (Button) findViewById(R.id.submit);
+
         // WebView 초기화
         init_webView();
 
         // 핸들러를 통한 JavaScript 이벤트 반응
         handler = new Handler();
-        submitButton.setOnClickListener(this);
+
 
     }
 
@@ -81,10 +78,7 @@ public class CallAddressDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.submit:
 
-        }
 
     }
 
