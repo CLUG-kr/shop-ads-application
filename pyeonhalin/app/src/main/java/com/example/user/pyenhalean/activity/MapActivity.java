@@ -12,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.user.pyenhalean.GetHTMLTask;
 import com.example.user.pyenhalean.R;
@@ -34,7 +35,6 @@ import java.util.concurrent.ExecutionException;
 
 
 public class MapActivity extends BaseActivity implements OnMapReadyCallback {
-    NaverMap naverMap = null;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
 
@@ -68,11 +68,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // Map객체 생가면 onMapReady 호출 -> callBack
     @UiThread
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-        this.naverMap = naverMap;
-        this.naverMap.setLocationSource(locationSource);
+        naverMap.setLocationSource(locationSource);
 
         String[] response = null;
 
@@ -85,16 +85,25 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
         final Geocoder geocoder = new Geocoder(this);
         String locationName = null;
         List<Address> list = null;
+        Location location;
+        LocationManager manager;
 
         //variable for map overlay
-        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
+        LocationOverlay locationOverlay;
         CameraUpdate cameraUpdate;
 
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if((location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)) == null
+                && (location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)) == null) {
+
+            Toast.makeText(MapActivity.this,
+                    "위치정보가 잡히지 않습니다.\n 잠시후 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
-
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         latitude = user_latitude = location.getLatitude();
         longitude = user_longitude = location.getLongitude();
@@ -145,14 +154,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                 }
             });
 
-            marker.setMap(this.naverMap);
+            marker.setMap(naverMap);
         }
 
         // set map camera location
-        // change latitude to user_latitude longitude to user_longitude after test
+        // change latitude to user_latitude longitude to user_longitude after test and change 117 line
         cameraUpdate = CameraUpdate.scrollTo(new LatLng(latitude, longitude));
-        locationOverlay.setPosition(new LatLng(latitude, longitude));
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+        locationOverlay.setPosition(new LatLng(user_latitude, user_longitude));
+        naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
         naverMap.moveCamera(cameraUpdate);
     }
 
