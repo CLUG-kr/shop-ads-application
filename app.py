@@ -337,6 +337,7 @@ def loadStore():
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,addressManageDB))
     curs = conn.cursor()
     address = request.form['address']
+    curs.execute("CREATE TABLE if not exists " + address + "(name,dataX, dataY)")
     curs.execute("select * from "+address+"")
     data = ""
     for i in curs.fetchall():
