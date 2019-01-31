@@ -270,36 +270,13 @@ def ownerItemDownload_render():
 
 @app.route("/ownerItemDownload", methods=['POST','GET'])
 def ownerItemDownload():
-    global loginData
+    data = ""
     conn = sqlite3.connect(os.path.join(UPLOAD_FOLDER,storeManageDB))
     curs = conn.cursor()
     username = request.form['id']
-    itemName = request.form['itemName']
-    itemPrice = request.form['itemPrice']
-    itemEvent = request.form['event']
-    userKey = loginData[username]
-    if username in request.cookies:
-        cookieKey = request.cookies.get(username)
-    else :
-        return "<h1>wrong access<h1>"
-    Access= userAuthenticate(userKey, cookieKey)
-    if Access == False:
-        data = "<h1>wrong access<h1>"
-    elif Access == True:
-        if isOwner(username):
-            curs.execute("SELECT  * FROM owner_" + username)
-            for i in curs.fetchall():
-                if i[0] == itemName:
-                    data = "<h1>fail</h1>"
-                    return data
-            data = "<h1>success</h1>"
-            curs.execute("insert into "+'owner_'+username+" values ('" + itemName + "', '" +itemPrice+ "', '" +itemEvent+"')")
-            curs.execute("SELECT  * FROM owner_"+username)
-            for i in curs.fetchall():
-                if i[0] == itemName:
-                    data = data + "<h1>" + str(i[0]) + str(i[1])+ str(i[2]) + "</h1>"
-        else :
-            data = '<h1>isNotOwner'
+    curs.execute("SELECT  * FROM owner_" + username)
+    for i in curs.fetchall():
+        data += "<h1>"+i[0] +'!' + i[1]+'!'+ i[2]+"</h1>"
     conn.commit()
     conn.close()
     return data
