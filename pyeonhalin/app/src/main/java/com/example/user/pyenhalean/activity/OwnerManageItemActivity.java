@@ -85,8 +85,6 @@ public class OwnerManageItemActivity extends BaseActivity {
                     returnCardViewItemDTO[i] = new CardViewItemDTO(R.drawable.preparing_image, data[0]
                             , data[2], data[1]);
             }
-
-
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

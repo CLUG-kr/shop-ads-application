@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
+    new daum.Postcode({
+        oncomplete: function(data) {
+            window.TestApp.setAddress(data.jibunAddress);
+        }
+    }).open();
+</script>
+
+
+</body>
+</html>
