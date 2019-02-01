@@ -45,6 +45,7 @@ public class OwnerManageItemActivity extends BaseActivity {
                 Intent intent = new Intent(OwnerManageItemActivity.this, AddItemActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
             }
         });
